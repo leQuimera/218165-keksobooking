@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Kally L](https://up.htmlacademy.ru/javascript/9/user/218165).
-* Наставник: `Неизвестно`.
+* Наставник: `Александр Большов`.
 
 ---
 
