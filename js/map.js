@@ -1,6 +1,5 @@
 'use strict';
 
-var feature = [];                                   // Собрка фишек для квартиры !!!!! Перенести в функцию генерации объявы
 var adresCount = 8;
 var userIdNumbers = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var timeSet = ['12:00', '13:00', '14:00'];
@@ -42,11 +41,14 @@ var getRandomUniqueItem = function (array) {
 // Генерация описания квартирных удобств
 var createFeatures = function (advertNumber) {
   var someFeature = offerFeature.slice();
-  // var counter = randomize(0, offerFeature.length - 1);
-  for (var i = 0; i < randomize(0, offerFeature.length - 1); i++) {
-    feature[i] = someFeature[i];
+  var position = [];
+  var rand = randomize(0, offerFeature.length);
+  for (var i = 0; i < rand; i++) {
+    var tmp = randomize(0, rand - i);
+    position[i] = someFeature[tmp];
+    someFeature.splice(tmp, 1);
   }
-  return someFeature;
+  return position;
 };
 
 // Создание массива объявлений
