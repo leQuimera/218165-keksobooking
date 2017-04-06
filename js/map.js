@@ -1,6 +1,6 @@
 'use strict';
 
-var adsressCount = 8;
+var addressCount = 8;
 var userIdNumbers = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var timesCheckIn = ['12:00', '13:00', '14:00'];
 var timesCheckOut = ['12:00', '13:00', '14:00'];
@@ -84,7 +84,7 @@ var createAdvert = function () {
 var createAdvertsList = function (avdertsCount) {
   var advertsList = [];
   for (var i = 0; i < avdertsCount; i++) {
-    advertsList.push(createAdvert(i));
+    advertsList.push(createAdvert());
   }
   return advertsList;
 };
@@ -142,14 +142,12 @@ var createDialog = function (advertItem) {
 var renderPins = function (adverts) {
   var pin = document.querySelector('.tokyo__pin-map');
   var fragment = document.createDocumentFragment();
-
   for (var i = 0; i < adverts.length; i++) {
     fragment.appendChild(createPin(adverts[i]));
   }
-
   pin.appendChild(fragment);
 };
 
-var listOfAdverts = createAdvertsList(adsressCount);
+var listOfAdverts = createAdvertsList(addressCount);
 renderPins(listOfAdverts);
 createDialog(listOfAdverts[listOfAdverts.length - 1]);
