@@ -1,8 +1,9 @@
 'use strict';
 
-var adresCount = 8;
+var adsressCount = 8;
 var userIdNumbers = ['01', '02', '03', '04', '05', '06', '07', '08'];
-var timeSet = ['12:00', '13:00', '14:00'];
+var timesCheckIn = ['12:00', '13:00', '14:00'];
+var timesCheckOut = ['12:00', '13:00', '14:00'];
 var titles = [
   'Большая уютная квартира',
   'Маленькая неуютная квартира',
@@ -13,46 +14,45 @@ var titles = [
   'Уютное бунгало далеко от моря',
   'Неуютное бунгало по колено в воде'
 ];
-var offerType = ['flat', 'house', 'bungalo'];
-var offerTypeName = {
+var offerTypes = ['flat', 'house', 'bungalo'];
+var offerTypeNames = {
   'flat': 'квартира',
   'house': 'дом',
   'bungalo': 'бунгало'
 };
-var offerFeature = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-
-var lodgeTemplate = document.querySelector('#lodge-template').content; // Блок для объявлений
-var dialog = document.querySelector('.dialog');              //  Где лежит по коду
-var dialogPanel = document.querySelector('.dialog__panel');  // Тело сообщения
+var offerFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
 // Возврат случайного значения
-var randomize = function (min, max) {
+var getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
+
 // Возврат случайного эллемента из массива
 var getRandomArrayItem = function (array) {
-  return array[randomize(0, array.length - 1)];
+  return array[getRandomInt(0, array.length - 1)];
 };
+
 // Возврат уникального эллемента из массива
 var getRandomUniqueItem = function (array) {
-  var removed = array.splice(randomize(0, array.length - 1), 1);
+  var removed = array.splice(getRandomInt(0, array.length - 1), 1);
   return removed;
 };
+
 // Генерация описания квартирных удобств
-var createFeatures = function (advertNumber) {
-  var someFeature = offerFeature.slice();
-  var position = [];
-  var rand = randomize(0, offerFeature.length);
-  for (var i = 0; i < rand; i++) {
-    var tmp = randomize(0, rand - i);
-    position[i] = someFeature[tmp];
-    someFeature.splice(tmp, 1);
+var createFeatures = function () {
+  var someFeatures = offerFeatures.slice(0);
+  var positions = [];
+  var rand = getRandomInt(0, offerFeatures.length - 1);
+  for (var i = 0; i <= rand; i++) {
+    positions[i] = getRandomUniqueItem(someFeatures)[0];
   }
-  return position;
+  return positions;
 };
 
 // Создание массива объявлений
-var createAdvert = function (advertNumber) {
+var createAdvert = function () {
+  var locationX = getRandomInt(300, 900);
+  var locationY = getRandomInt(100, 500);
   var poster = {
     'author': {
       'avatar': 'img/avatars/user' + getRandomUniqueItem(userIdNumbers) + '.png'
@@ -60,21 +60,21 @@ var createAdvert = function (advertNumber) {
 
     'offer': {
       'title': getRandomUniqueItem(titles),
-      'address': randomize(300, 900) + ', ' + randomize(100, 500),
-      'price': randomize(1000, 1000000),
-      'type': getRandomArrayItem(offerType),
-      'rooms': randomize(1, 5),
-      'guests': randomize(1, 15),
-      'checkin': getRandomArrayItem(timeSet),
-      'checkout': getRandomArrayItem(timeSet),
-      'features': createFeatures(advertNumber),
+      'address': locationX + ', ' + locationY,
+      'price': getRandomInt(1000, 1000000),
+      'type': getRandomArrayItem(offerTypes),
+      'rooms': getRandomInt(1, 5),
+      'guests': getRandomInt(1, 15),
+      'checkin': getRandomArrayItem(timesCheckIn),
+      'checkout': getRandomArrayItem(timesCheckOut),
+      'features': createFeatures(),
       'description': '',
       'photos': []
     },
 
     'location': {
-      'x': randomize(300, 900),
-      'y': randomize(100, 500)
+      'x': locationX,
+      'y': locationY
     }
   };
   return poster;
@@ -83,11 +83,9 @@ var createAdvert = function (advertNumber) {
 // Генерация списка предложений
 var createAdvertsList = function (avdertsCount) {
   var advertsList = [];
-
   for (var i = 0; i < avdertsCount; i++) {
     advertsList.push(createAdvert(i));
   }
-
   return advertsList;
 };
 
@@ -108,8 +106,9 @@ var createPin = function (advert) {
   return pin;
 };
 
-// Генерация объявления
-var createAdvertPost = function (advertItem) {
+// Вывод данных о квартире на карту
+var createDialog = function (advertItem) {
+  var lodgeTemplate = document.querySelector('#lodge-template').content;
   var lodgeItem = lodgeTemplate.cloneNode(true);
   var lodgeTitle = lodgeItem.querySelector('.lodge__title');
   var lodgeAddress = lodgeItem.querySelector('.lodge__address');
@@ -117,11 +116,13 @@ var createAdvertPost = function (advertItem) {
   var lodgeType = lodgeItem.querySelector('.lodge__type');
   var lodgeRooms = lodgeItem.querySelector('.lodge__rooms-and-guests');
   var lodgeCheckin = lodgeItem.querySelector('.lodge__checkin-time');
+  var dialog = document.querySelector('.dialog');
+  var dialogPanel = document.querySelector('.dialog__panel');
 
   lodgeTitle.textContent = advertItem.offer.title;
   lodgeAddress.textContent = advertItem.offer.address;
   lodgePrice.innerHTML = advertItem.offer.price + ' ' + '&#8381;/ночь';
-  lodgeType.textContent = offerTypeName[advertItem.offer.type];
+  lodgeType.textContent = offerTypeNames[advertItem.offer.type];
   lodgeRooms.textContent = 'Для ' + advertItem.offer.guests + ' гостей в ' + advertItem.offer.rooms + ' комнатах';
   lodgeCheckin.textContent = 'Заезд после' + advertItem.offer.checkin + ', выезд до ' + advertItem.offer.checkout;
 
@@ -134,11 +135,6 @@ var createAdvertPost = function (advertItem) {
   lodgeItem.querySelector('.lodge__description').textContent = advertItem.offer.description;
   document.querySelector('.dialog__title img').src = advertItem.author.avatar;
 
-  return lodgeItem;
-};
-
-// Вывод данных о квартире на карту
-var createDialog = function (lodgeItem) {
   dialog.replaceChild(lodgeItem, dialogPanel);
 };
 
@@ -154,6 +150,6 @@ var renderPins = function (adverts) {
   pin.appendChild(fragment);
 };
 
-var listOfAdverts = createAdvertsList(adresCount);
+var listOfAdverts = createAdvertsList(adsressCount);
 renderPins(listOfAdverts);
-createDialog(createAdvertPost(listOfAdverts[listOfAdverts.length - 1]));
+createDialog(listOfAdverts[listOfAdverts.length - 1]);
