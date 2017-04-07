@@ -1,10 +1,10 @@
 'use strict';
 
-var addressCount = 8;
-var userIdNumbers = ['01', '02', '03', '04', '05', '06', '07', '08'];
-var timesCheckIn = ['12:00', '13:00', '14:00'];
-var timesCheckOut = ['12:00', '13:00', '14:00'];
-var titles = [
+var ADDRESS_COUNT = 8;
+var USER_ID_NUMBERS = ['01', '02', '03', '04', '05', '06', '07', '08'];
+var TIMES_CHECK_IN = ['12:00', '13:00', '14:00'];
+var TIMES_CHECK_OUT = ['12:00', '13:00', '14:00'];
+var TITLES = [
   'Большая уютная квартира',
   'Маленькая неуютная квартира',
   'Огромный прекрасный дворец',
@@ -14,13 +14,13 @@ var titles = [
   'Уютное бунгало далеко от моря',
   'Неуютное бунгало по колено в воде'
 ];
-var offerTypes = ['flat', 'house', 'bungalo'];
-var offerTypeNames = {
+var OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var OFFER_TYPES = ['flat', 'house', 'bungalo'];
+var OFFER_TYPE_NAMES = {
   'flat': 'квартира',
   'house': 'дом',
   'bungalo': 'бунгало'
 };
-var offerFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
 // Возврат случайного значения
 var getRandomInt = function (min, max) {
@@ -35,38 +35,38 @@ var getRandomArrayItem = function (array) {
 // Возврат уникального эллемента из массива
 var getRandomUniqueItem = function (array) {
   var removed = array.splice(getRandomInt(0, array.length - 1), 1);
-  return removed;
+  return removed[0];
 };
 
 // Генерация описания квартирных удобств
 var createFeatures = function () {
-  var someFeatures = offerFeatures.slice(0);
+  var someFeatures = OFFER_FEATURES.slice(0);
   var positions = [];
-  var rand = getRandomInt(0, offerFeatures.length - 1);
+  var rand = getRandomInt(0, OFFER_FEATURES.length - 1);
   for (var i = 0; i <= rand; i++) {
-    positions[i] = getRandomUniqueItem(someFeatures)[0];
+    positions[i] = getRandomUniqueItem(someFeatures);
   }
   return positions;
 };
 
-// Создание массива объявлений
+// Создание объявления
 var createAdvert = function () {
   var locationX = getRandomInt(300, 900);
   var locationY = getRandomInt(100, 500);
   var poster = {
     'author': {
-      'avatar': 'img/avatars/user' + getRandomUniqueItem(userIdNumbers) + '.png'
+      'avatar': 'img/avatars/user' + getRandomUniqueItem(USER_ID_NUMBERS) + '.png'
     },
 
     'offer': {
-      'title': getRandomUniqueItem(titles),
+      'title': getRandomUniqueItem(TITLES),
       'address': locationX + ', ' + locationY,
       'price': getRandomInt(1000, 1000000),
-      'type': getRandomArrayItem(offerTypes),
+      'type': getRandomArrayItem(OFFER_TYPES),
       'rooms': getRandomInt(1, 5),
       'guests': getRandomInt(1, 15),
-      'checkin': getRandomArrayItem(timesCheckIn),
-      'checkout': getRandomArrayItem(timesCheckOut),
+      'checkin': getRandomArrayItem(TIMES_CHECK_IN),
+      'checkout': getRandomArrayItem(TIMES_CHECK_OUT),
       'features': createFeatures(),
       'description': '',
       'photos': []
@@ -122,7 +122,7 @@ var createDialog = function (advertItem) {
   lodgeTitle.textContent = advertItem.offer.title;
   lodgeAddress.textContent = advertItem.offer.address;
   lodgePrice.innerHTML = advertItem.offer.price + ' ' + '&#8381;/ночь';
-  lodgeType.textContent = offerTypeNames[advertItem.offer.type];
+  lodgeType.textContent = OFFER_TYPE_NAMES[advertItem.offer.type];
   lodgeRooms.textContent = 'Для ' + advertItem.offer.guests + ' гостей в ' + advertItem.offer.rooms + ' комнатах';
   lodgeCheckin.textContent = 'Заезд после' + advertItem.offer.checkin + ', выезд до ' + advertItem.offer.checkout;
 
@@ -148,6 +148,6 @@ var renderPins = function (adverts) {
   pin.appendChild(fragment);
 };
 
-var listOfAdverts = createAdvertsList(addressCount);
+var listOfAdverts = createAdvertsList(ADDRESS_COUNT);
 renderPins(listOfAdverts);
-createDialog(listOfAdverts[listOfAdverts.length - 1]);
+createDialog(listOfAdverts[0]);
