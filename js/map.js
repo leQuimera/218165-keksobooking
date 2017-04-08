@@ -34,8 +34,7 @@ var getRandomArrayItem = function (array) {
 
 // Возврат уникального эллемента из массива
 var getRandomUniqueItem = function (array) {
-  var removed = array.splice(getRandomInt(0, array.length - 1), 1);
-  return removed[0];
+  return array.splice(getRandomInt(0, array.length - 1), 1);
 };
 
 // Генерация описания квартирных удобств
@@ -44,7 +43,7 @@ var createFeatures = function () {
   var positions = [];
   var rand = getRandomInt(0, OFFER_FEATURES.length - 1);
   for (var i = 0; i <= rand; i++) {
-    positions[i] = getRandomUniqueItem(someFeatures);
+    positions[i] = getRandomUniqueItem(someFeatures)[0];
   }
   return positions;
 };
