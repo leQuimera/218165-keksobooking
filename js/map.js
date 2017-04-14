@@ -14,6 +14,7 @@ var OFFER_TYPE_NAMES = {
 };
 var ESCAPE_KEY_CODE = 27;
 var ENTER_KEY_CODE = 13;
+var pinsMap = document.querySelector('.tokyo__pin-map');
 
 // Возврат случайного значения
 var getRandomInt = function (min, max) {
@@ -176,12 +177,11 @@ var createDialog = function (advertItem) {
 
 // Нанесение пинов на карту
 var renderPins = function (adverts) {
-  var pin = document.querySelector('.tokyo__pin-map');
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < adverts.length; i++) {
     fragment.appendChild(createPin(adverts[i], i));
   }
-  pin.appendChild(fragment);
+  pinsMap.appendChild(fragment);
 };
 
 var listOfAdverts = createAdvertsList(ADDRESS_COUNT);
@@ -189,8 +189,6 @@ renderPins(listOfAdverts);
 createDialog(listOfAdverts[0]);
 
 // MODULE4-TASK1
-
-var pinsMap = document.querySelector('.tokyo__pin-map');
 var pinActive = document.querySelector('.pin--active');
 var dialogWindow = document.querySelector('.dialog');
 var dialogClose = dialogWindow.querySelector('.dialog__close');
@@ -199,7 +197,6 @@ var dialogClose = dialogWindow.querySelector('.dialog__close');
 При нажатии на любой из элементов .pin ==> document.querySelector('.pin');
   ему должен добавляться класс pin--active
   и должен показываться элемент .dialog */
-
 // Поиск номера нужного объявления по данным фотографии
 var searchAdvert = function (currentSrc) {
   var adv = 0;
@@ -217,7 +214,6 @@ var searchAdvert = function (currentSrc) {
 Добавить обработчики для альтернативного ввода с клавиатуры onkeydown для кнопок открытия/закрытия объявлений:
   Когда объявление пин в фокусе .pin,
   то диалог с подробностями должен показываться по нажатию кнопки ENTER*/
-
 var onShowDialog = function (evt) {
   if (isEnterPressed(evt) || evt.type === 'click') {
    // Создание блока переменных в зависимости от того, куда ткнул пользователь мышкой
@@ -237,7 +233,6 @@ var onShowDialog = function (evt) {
     }
     currentPin.classList.add('pin--active');
     pinActive = currentPin;
-
     // Создание окна диалога для выбранного пина
     var pinNumber = searchAdvert(currentSrc);
     createDialog(listOfAdverts[pinNumber]);
