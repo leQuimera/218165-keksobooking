@@ -150,3 +150,79 @@ var renderPins = function (adverts) {
 var listOfAdverts = createAdvertsList(ADDRESS_COUNT);
 renderPins(listOfAdverts);
 createDialog(listOfAdverts[0]);
+
+// MODULE4-TASK1
+
+var pinsMap = document.querySelector('.tokyo__pin-map');
+// var pins = document.querySelectorAll('.pin');
+var pinActive = document.querySelector('.pin--active');
+var dialogWindow = document.querySelector('.dialog');
+var dialogClose = dialogWindow.querySelector('.dialog__close');
+
+/*
+При нажатии на любой из элементов .pin ==> document.querySelector('.pin');
+  ему должен добавляться класс pin--active
+  и должен показываться элемент .dialog */
+
+// Поиск номера нужного объявления по данным фотографии
+var searchAdvert = function (evt) {
+  var currentSrc = evt.target.getAttribute('src');
+  var pinCount = 0;
+  listOfAdverts.forEach(function (item, i, arr) {
+    if (arr[i].author.avatar === currentSrc) {
+      pinCount = i;
+    }
+  });
+  return pinCount;
+};
+
+var onClick = function (evt) {
+  // Создание блока переменных в зависимости от того, куда ткнул пользователь мышкой
+  if (evt.target.localName === 'img') {
+    var currentPin = evt.target.offsetParent;
+  } else if (evt.target.localName === 'div') {
+    currentPin = evt.target;
+  }
+  /* Если до этого у другого элемента существовал класс pin--active,
+    то у этого элемента класс нужно убрать*/
+  if (pinActive) {
+    pinActive.classList.remove('pin--active');
+  }
+  currentPin.classList.add('pin--active');
+  pinActive = currentPin;
+  // Создание окна диалога для выбранного пина
+  var pinNumber = searchAdvert(evt);
+  createDialog(listOfAdverts[pinNumber]);
+};
+
+pinsMap.addEventListener('click', onClick);
+
+/* При нажатии на элемент .dialog__close
+  карточка объявления должна скрываться.
+  При этом должен деактивироваться элемент .pin, который был помечен как*/
+
+var onCloseDialogClick = function (evt) {
+  pinActive.classList.remove('pin--active');
+  dialogWindow.classList.add('hidden');
+};
+
+dialogClose.addEventListener('click', onCloseDialogClick);
+
+/* при показе карточки
+  на карточке должна отображаться актуальная информация о текущем выбранном объекте
+    (заголовок, адрес, цена, время заезда и выезда).
+
+Добавить обработчики для альтернативного ввода с клавиатуры onkeydown для кнопок открытия/закрытия объявлений:
+  Когда объявление пин в фокусе .pin,
+  то диалог с подробностями должен показываться по нажатию кнопки ENTER
+
+Необходимо не забыть добавить tabindex="0" для иконки пользователя, чтобы пин фокусировался
+
+Когда диалог открыт,
+  то клавиша ESC должна закрывать диалог и деактивировать элемент .pin, который был помечен как активный
+
+Если диалог открыт и фокус находится на крестике,
+  то нажатие клавиши ENTER приводит к закрытию диалога
+  и деактивации элемента .pin, который был помечен как активный
+  */
+
