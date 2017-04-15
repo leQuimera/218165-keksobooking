@@ -15,6 +15,9 @@ var OFFER_TYPE_NAMES = {
 var ESCAPE_KEY_CODE = 27;
 var ENTER_KEY_CODE = 13;
 var pinsMap = document.querySelector('.tokyo__pin-map');
+var pinActive = document.querySelector('.pin--active');
+var dialogWindow = document.querySelector('.dialog');
+var dialogClose = dialogWindow.querySelector('.dialog__close');
 
 // Возврат случайного значения
 var getRandomInt = function (min, max) {
@@ -88,6 +91,7 @@ var createPin = function (advert, stage) {
   var img = document.createElement('img');
   if (stage === 0) {
     pin.className = 'pin pin--active';
+    pinActive = pin;
   } else {
     pin.className = 'pin';
   }
@@ -98,7 +102,6 @@ var createPin = function (advert, stage) {
   img.height = 40;
   img.src = advert.author.avatar;
   pin.appendChild(img);
-  // Необходимо не забыть добавить tabindex="0" для иконки пользователя, чтобы пин фокусировался
   pin.setAttribute('tabindex', 0);
   return pin;
 };
@@ -111,20 +114,14 @@ var isEscapePressed = function (evt) {
 var isEnterPressed = function (evt) {
   return evt && evt.keyCode === ENTER_KEY_CODE;
 };
+// По клику мышки
+var isClicked = function (evt) {
+  return evt.type === 'click';
+};
 
-/* При нажатии на элемент .dialog__close
-  карточка объявления должна скрываться.
-  При этом должен деактивироваться элемент .pin, который был помечен  при показе карточки
-  на карточке должна отображаться актуальная информация о текущем выбранном объекте
-  (заголовок, адрес, цена, время заезда и выезда).*/
-/* Когда диалог открыт,
-  то клавиша ESC должна закрывать диалог и деактивировать элемент .pin, который был помечен как активный
-Если диалог открыт и фокус находится на крестике,
-  то нажатие клавиши ENTER приводит к закрытию диалога
-  и деактивации элемента .pin, который был помечен как активный
-  */
+// Закрытие окна с абьявлением
 var onCloseDialog = function (evt) {
-  if (isEnterPressed() || evt.type === 'click') {
+  if (isEnterPressed(evt) || isClicked(evt)) {
     if (pinActive) {
       pinActive.classList.remove('pin--active');
     }
@@ -133,10 +130,12 @@ var onCloseDialog = function (evt) {
   }
 };
 
+// Закрытие окна диалога при нажатии esc
 var onCloseDialogEsc = function (evt) {
   if (isEscapePressed(evt)) {
     if (pinActive) {
       pinActive.classList.remove('pin--active');
+      pinActive = '';
     }
     dialogWindow.style.display = 'none';
   }
@@ -184,50 +183,38 @@ var renderPins = function (adverts) {
   pinsMap.appendChild(fragment);
 };
 
+// Объявление и все пины созданы,  нанесены  на карту
 var listOfAdverts = createAdvertsList(ADDRESS_COUNT);
 renderPins(listOfAdverts);
 createDialog(listOfAdverts[0]);
 
-// MODULE4-TASK1
-var pinActive = document.querySelector('.pin--active');
-var dialogWindow = document.querySelector('.dialog');
-var dialogClose = dialogWindow.querySelector('.dialog__close');
-
-/*
-При нажатии на любой из элементов .pin ==> document.querySelector('.pin');
-  ему должен добавляться класс pin--active
-  и должен показываться элемент .dialog */
 // Поиск номера нужного объявления по данным фотографии
 var searchAdvert = function (currentSrc) {
-  var adv = 0;
   for (var i = 0; i < listOfAdverts.length; i++) {
     if (listOfAdverts[i].author.avatar === currentSrc) {
-      adv = i;
       break;
     }
   }
-  return adv;
+  return i;
 };
 
 // Показать объявление, если на пин кликнули или нажали по enter
-/*
-Добавить обработчики для альтернативного ввода с клавиатуры onkeydown для кнопок открытия/закрытия объявлений:
-  Когда объявление пин в фокусе .pin,
-  то диалог с подробностями должен показываться по нажатию кнопки ENTER*/
 var onShowDialog = function (evt) {
-  if (isEnterPressed(evt) || evt.type === 'click') {
+  if (isEnterPressed(evt) || isClicked(evt)) {
    // Создание блока переменных в зависимости от того, куда ткнул пользователь мышкой
+   var currentPin = '';
+   var currentSrc = '';
+   var currentTarget = evt.target;
     if (evt.target.className === 'rounded') {
-      var currentPin = evt.target.offsetParent;
-      var currentSrc = evt.target.getAttribute('src');
-    } else if (evt.target.className === 'pin') {
-      currentPin = evt.target;
-      currentSrc = evt.target.children[0].getAttribute('src');
-    } else {
-      return;
+      currentPin = currentTarget.offsetParent;
+      currentSrc = currentTarget.getAttribute('src');
+    } else if (currentTarget.className === 'pin') {
+      currentPin = currentTarget;
+      currentSrc = currentTarget.children[0].getAttribute('src');
     }
     /* Если до этого у другого элемента существовал класс pin--active,
-    то у этого элемента класс нужно убрать*/
+    * то у этого элемента класс нужно убрать
+    */
     if (pinActive) {
       pinActive.classList.remove('pin--active');
     }
