@@ -82,19 +82,15 @@ var createAdvertsList = function (avdertsCount) {
   for (var i = 0; i < avdertsCount; i++) {
     advertsList.push(createAdvert());
   }
+  dialogWindow.style.display = 'none';
   return advertsList;
 };
 
 // Создание пина для объявления
-var createPin = function (advert, stage) {
+var createPin = function (advert) {
   var pin = document.createElement('div');
   var img = document.createElement('img');
-  if (stage === 0) {
-    pin.className = 'pin pin--active';
-    pinActive = pin;
-  } else {
-    pin.className = 'pin';
-  }
+  pin.className = 'pin';
   pin.style.left = advert.location.x - pin.offsetWidth / 2 + 'px';
   pin.style.top = advert.location.y - pin.offsetHeight + 'px';
   img.className = 'rounded';
@@ -178,7 +174,7 @@ var createDialog = function (advertItem) {
 var renderPins = function (adverts) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < adverts.length; i++) {
-    fragment.appendChild(createPin(adverts[i], i));
+    fragment.appendChild(createPin(adverts[i]));
   }
   pinsMap.appendChild(fragment);
 };
@@ -186,7 +182,6 @@ var renderPins = function (adverts) {
 // Объявление и все пины созданы,  нанесены  на карту
 var listOfAdverts = createAdvertsList(ADDRESS_COUNT);
 renderPins(listOfAdverts);
-createDialog(listOfAdverts[0]);
 
 // Поиск номера нужного объявления по данным фотографии
 var searchAdvert = function (currentSrc) {
@@ -231,3 +226,129 @@ pinsMap.addEventListener('click', onShowDialog);
 dialogClose.addEventListener('click', onCloseDialog);
 pinsMap.addEventListener('keydown', onShowDialog);
 dialogClose.addEventListener('keydown', onCloseDialog);
+
+// Работа с полями
+
+var workWithForm = function () {
+  var formInner = document.querySelector('.notice__form');
+  var timeCheckIn = formInner.querySelector('#time');
+  var timeCheckOut = formInner.querySelector('#timeout');
+  var typeOfAdvert = formInner.querySelector('#type');
+  var priceForAdvert = formInner.querySelector('#price');
+  var roomNumber = formInner.querySelector('#room_number');
+  var capacity = formInner.querySelector('#capacity');
+  var title = formInner.querySelector('#title');
+  var submitButton = formInner.querySelector('.form__submit');
+  var address = formInner.querySelector('#address');
+
+  var clearForm = function () {
+    var description = formInner.querySelector('#description');
+
+    title.value = '';
+    typeOfAdvert.value = 'flat';
+    priceForAdvert.value = '1000';
+    roomNumber.value = '1';
+    capacity.value = 'not for guests';
+    description.value = '';
+    address.value = '';
+    timeCheckIn.value = '12';
+    timeCheckOut.value = '12';
+  /* Цена за ночь
+  *  Обязательное поле
+  * Числовое поле
+  * Минимальное значение — 1000 по умолчанию
+  * Максимальное значение — 1000000
+  */
+    priceForAdvert.required = true;
+    priceForAdvert.min = 1000;
+    priceForAdvert.max = 1000000;
+    /* Заголовок объявления
+    * Обязательное полей
+    * Минимальная длина — 30 символов
+    * Макcимальная длина — 100 символов
+    */
+    title.required = true;
+    title.minLength = 30;
+    title.maxLength = 100;
+    var checkFeatures = formInner.querySelectorAll('.feature');
+    for (var i = 0; i < checkFeatures.length; i++) {
+      checkFeatures[i].checked = false;
+    }
+  };
+
+// При изменении «времени заезда» и «время выезда» автоматически выставляется точно таким же — например, если время заезда указано «после 14», то время выезда будет равно «до 14»
+  var onSelectCheckIn = function () {
+    switch (timeCheckIn.value) {
+      case '12':
+        timeCheckOut.value = '12';
+        break;
+      case '13':
+        timeCheckOut.value = '13';
+        break;
+      case '14':
+        timeCheckOut.value = '14';
+        break;
+    }
+  };
+  //  Изменениес тоимости предложения взависимости от типа
+  var onChangeAdvertPrice = function () {
+    switch (typeOfAdvert.value) {
+      case 'flat':
+        priceForAdvert.value = '1000';
+        break;
+      case 'hut':
+        priceForAdvert.value = '0';
+        break;
+      case 'palace':
+        priceForAdvert.value = '100000';
+        break;
+    }
+  };
+  // Количество комнат связано с количеством гостей: 2 или 100 комнат — «для 3 гостей»; 1 комната — «не для гостей»
+  var onSelectRoom = function () {
+    if (roomNumber.value === '2' || roomNumber.value === '100') {
+      capacity.value = 'for 3 guests';
+    } else if (roomNumber.value === '1') {
+      capacity.value = 'not for guests';
+    }
+  };
+
+  var checkFieldValid = function (checkedField) {
+    if (!checkedField.validity.valid || checkedField.value === '') {
+      checkedField.style.boxShadow = 'none';
+      checkedField.style.border = '2px solid red';
+      return false;
+    } else {
+      checkedField.style.border = '1px solid #d9d9d3';
+      return true;
+    }
+  };
+
+  var formValidation = function (evt) {
+    evt.preventDefault();
+    if (isEnterPressed(evt) || isClicked(evt)) {
+      var checkedTitle = checkFieldValid(title);
+      var checkedAddress = checkFieldValid(address);
+      var doSomthing;
+      if (checkedAddress && checkedTitle) {
+        clearForm();
+        doSomthing = true;
+      } else {
+        doSomthing = false;
+      }
+    }
+    return doSomthing;
+  };
+
+  submitButton.addEventListener('click', formValidation);
+  timeCheckIn.addEventListener('change', onSelectCheckIn);
+  typeOfAdvert.addEventListener('change', onChangeAdvertPrice);
+  roomNumber.addEventListener('change', onSelectRoom);
+};
+
+workWithForm();
+
+/* Проверка правильности введенных данных
+
+При отправке формы нужно проверить правильно ли заполнены поля и если какие-то поля заполнены неверно, то нужно выделить неверные поля красной рамкой
+После отправки формы все значения должны сбрасываться на те, что были по-умолчанию */
