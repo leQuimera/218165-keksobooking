@@ -202,9 +202,9 @@ var searchAdvert = function (currentSrc) {
 var onShowDialog = function (evt) {
   if (isEnterPressed(evt) || isClicked(evt)) {
    // Создание блока переменных в зависимости от того, куда ткнул пользователь мышкой
-   var currentPin = '';
-   var currentSrc = '';
-   var currentTarget = evt.target;
+    var currentPin = '';
+    var currentSrc = '';
+    var currentTarget = evt.target;
     if (evt.target.className === 'rounded') {
       currentPin = currentTarget.offsetParent;
       currentSrc = currentTarget.getAttribute('src');
