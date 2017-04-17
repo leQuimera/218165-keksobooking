@@ -102,6 +102,22 @@ var createPin = function (advert) {
   return pin;
 };
 
+
+/*
+var eventCheck = {
+  enterCode: 13,
+  escCode: 27,
+  isEnterPresses: function (evt) {
+      return evt && evt.keyCode === this.enterCode;
+    },
+  isEscapePressed: function (evt) {
+    return evt && evt.keyCode === this.escCode;
+    },
+  isClicked = function (evt) {
+   return evt.type === 'click';
+    }
+} */
+
 // Событие есть и нажат esc
 var isEscapePressed = function (evt) {
   return evt && evt.keyCode === ESCAPE_KEY_CODE;
@@ -203,7 +219,7 @@ var onShowDialog = function (evt) {
     if (evt.target.className === 'rounded') {
       currentPin = currentTarget.offsetParent;
       currentSrc = currentTarget.getAttribute('src');
-    } else if (currentTarget.className === 'pin') {
+    } else if (currentTarget.className === 'pin' || currentTarget.className === 'pin pin--active') {
       currentPin = currentTarget;
       currentSrc = currentTarget.children[0].getAttribute('src');
     }
@@ -241,6 +257,24 @@ var workWithForm = function () {
   var submitButton = formInner.querySelector('.form__submit');
   var address = formInner.querySelector('#address');
 
+  /* Цена за ночь
+  *  Обязательное поле
+  * Числовое поле
+  * Минимальное значение — 1000 по умолчанию
+  * Максимальное значение — 1000000
+  */
+  priceForAdvert.required = true;
+  priceForAdvert.min = 1000;
+  priceForAdvert.max = 1000000;
+  /* Заголовок объявления
+  * Обязательное полей
+  * Минимальная длина — 30 символов
+  * Макcимальная длина — 100 символов
+  */
+  title.required = true;
+  title.minLength = 30;
+  title.maxLength = 100;
+
   var clearForm = function () {
     var description = formInner.querySelector('#description');
 
@@ -248,49 +282,42 @@ var workWithForm = function () {
     typeOfAdvert.value = 'flat';
     priceForAdvert.value = '1000';
     roomNumber.value = '1';
-    capacity.value = 'not for guests';
+    capacity.value = '1';
     description.value = '';
     address.value = '';
     timeCheckIn.value = '12';
     timeCheckOut.value = '12';
-  /* Цена за ночь
-  *  Обязательное поле
-  * Числовое поле
-  * Минимальное значение — 1000 по умолчанию
-  * Максимальное значение — 1000000
-  */
-    priceForAdvert.required = true;
-    priceForAdvert.min = 1000;
-    priceForAdvert.max = 1000000;
-    /* Заголовок объявления
-    * Обязательное полей
-    * Минимальная длина — 30 символов
-    * Макcимальная длина — 100 символов
-    */
-    title.required = true;
-    title.minLength = 30;
-    title.maxLength = 100;
     var checkFeatures = formInner.querySelectorAll('.feature');
     for (var i = 0; i < checkFeatures.length; i++) {
-      checkFeatures[i].checked = false;
+      checkFeatures[i].children.feature.checked = false;
     }
   };
 
 // При изменении «времени заезда» и «время выезда» автоматически выставляется точно таким же — например, если время заезда указано «после 14», то время выезда будет равно «до 14»
-  var onSelectCheckIn = function () {
-    switch (timeCheckIn.value) {
+  var switchTime = function (firstTime) {
+    var secondTime;
+    switch (firstTime) {
       case '12':
-        timeCheckOut.value = '12';
+        secondTime = '12';
         break;
       case '13':
-        timeCheckOut.value = '13';
+        secondTime = '13';
         break;
       case '14':
-        timeCheckOut.value = '14';
+        secondTime = '14';
         break;
     }
+    return secondTime;
   };
-  //  Изменениес тоимости предложения взависимости от типа
+  var onSelectCheckIn = function (evt) {
+    if (evt.srcElement.id === 'time') {
+      timeCheckOut.value = switchTime(timeCheckIn.value);
+    } else if (evt.srcElement.id === 'timeout') {
+      timeCheckIn.value = switchTime(timeCheckOut.value);
+    }
+  };
+
+  //  Изменение стоимости предложения взависимости от типа
   var onChangeAdvertPrice = function () {
     switch (typeOfAdvert.value) {
       case 'flat':
@@ -307,9 +334,9 @@ var workWithForm = function () {
   // Количество комнат связано с количеством гостей: 2 или 100 комнат — «для 3 гостей»; 1 комната — «не для гостей»
   var onSelectRoom = function () {
     if (roomNumber.value === '2' || roomNumber.value === '100') {
-      capacity.value = 'for 3 guests';
+      capacity.value = '3';
     } else if (roomNumber.value === '1') {
-      capacity.value = 'not for guests';
+      capacity.value = '1';
     }
   };
 
@@ -326,22 +353,23 @@ var workWithForm = function () {
 
   var formValidation = function (evt) {
     evt.preventDefault();
-    if (isEnterPressed(evt) || isClicked(evt)) {
+    if (isClicked(evt)) {
       var checkedTitle = checkFieldValid(title);
       var checkedAddress = checkFieldValid(address);
-      var doSomthing;
+      var resultValue;
       if (checkedAddress && checkedTitle) {
         clearForm();
-        doSomthing = true;
+        resultValue = true;
       } else {
-        doSomthing = false;
+        resultValue = false;
       }
     }
-    return doSomthing;
+    return resultValue;
   };
 
   submitButton.addEventListener('click', formValidation);
   timeCheckIn.addEventListener('change', onSelectCheckIn);
+  timeCheckOut.addEventListener('change', onSelectCheckIn);
   typeOfAdvert.addEventListener('change', onChangeAdvertPrice);
   roomNumber.addEventListener('change', onSelectRoom);
 };
