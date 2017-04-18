@@ -12,8 +12,6 @@ var OFFER_TYPE_NAMES = {
   'house': 'дом',
   'bungalo': 'бунгало'
 };
-var ESCAPE_KEY_CODE = 27;
-var ENTER_KEY_CODE = 13;
 var pinsMap = document.querySelector('.tokyo__pin-map');
 var pinActive = document.querySelector('.pin--active');
 var dialogWindow = document.querySelector('.dialog');
@@ -101,47 +99,25 @@ var createPin = function (advert) {
   pin.setAttribute('tabindex', 0);
   return pin;
 };
-/* var eventCheck = {
+
+var eventCheck = {
   enterCode: 13,
   escCode: 27,
-  cliced: 'click',
-  isEnterPresses: function (evt) {
+  clicked: 'click',
+  isEnterPressed: function (evt) {
     return evt && evt.keyCode === this.enterCode;
   },
   isEscapePressed: function (evt) {
     return evt && evt.keyCode === this.escCode;
   },
-  isClicked = function (evt) {
-   return evt.type = this.clicked;
+  isClicked: function (evt) {
+    return evt.type === this.clicked;
   }
-}
-
-То есть, в функцию передается событие evt
-Например, onSelectTime. Тогда будет выглядеть как
-onCloseDialog(evt) {
-  if (evt.isEnterPressed || evt.isClicked) {
-    ...
-  }
-};
-Но оно так не работает
-*/
-
-// Событие есть и нажат esc
-var isEscapePressed = function (evt) {
-  return evt && evt.keyCode === ESCAPE_KEY_CODE;
-};
-// Событие есть и нажат enter
-var isEnterPressed = function (evt) {
-  return evt && evt.keyCode === ENTER_KEY_CODE;
-};
-// По клику мышки
-var isClicked = function (evt) {
-  return evt.type === 'click';
 };
 
 // Закрытие окна с абьявлением
 var onCloseDialog = function (evt) {
-  if (isEnterPressed(evt) || isClicked(evt)) {
+  if (eventCheck.isEnterPressed(evt) || eventCheck.isClicked(evt)) {
     if (pinActive) {
       pinActive.classList.remove('pin--active');
     }
@@ -152,7 +128,7 @@ var onCloseDialog = function (evt) {
 
 // Закрытие окна диалога при нажатии esc
 var onCloseDialogEsc = function (evt) {
-  if (isEscapePressed(evt)) {
+  if (eventCheck.isEscapePressed(evt)) {
     if (pinActive) {
       pinActive.classList.remove('pin--active');
       pinActive = '';
@@ -219,7 +195,7 @@ var searchAdvert = function (currentSrc) {
 
 // Показать объявление, если на пин кликнули или нажали по enter
 var onShowDialog = function (evt) {
-  if (isEnterPressed(evt) || isClicked(evt)) {
+  if (eventCheck.isEnterPressed(evt) || eventCheck.isClicked(evt)) {
    // Создание блока переменных в зависимости от того, куда ткнул пользователь мышкой
     var currentPin = '';
     var currentSrc = '';
@@ -252,7 +228,6 @@ pinsMap.addEventListener('keydown', onShowDialog);
 dialogClose.addEventListener('keydown', onCloseDialog);
 
 // Работа с полями
-
 var workWithForm = function () {
   var formInner = document.querySelector('.notice__form');
   var timeCheckIn = formInner.querySelector('#time');
@@ -272,7 +247,7 @@ var workWithForm = function () {
   * Максимальное значение — 1000000
   */
   priceForAdvert.setAttribute('required', 'required');
-  priceForAdvert.setAttribute('min', 1000);
+  priceForAdvert.setAttribute('min', 100);
   priceForAdvert.setAttribute('max', 1000000);
   /* Заголовок объявления
   * Обязательное полей
@@ -362,10 +337,10 @@ var workWithForm = function () {
 
   var formValidation = function (evt) {
     evt.preventDefault();
-    if (isClicked(evt)) {
+    if (eventCheck.isClicked(evt)) {
       var validTitle = checkFieldValid(title);
       var validPrice = checkFieldValid(priceForAdvert);
-      if (validPrice && validTitle) {
+      if (validTitle && validPrice) {
         clearForm();
       }
     }
