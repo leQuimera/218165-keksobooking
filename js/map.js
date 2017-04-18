@@ -271,17 +271,17 @@ var workWithForm = function () {
   * Минимальное значение — 1000 по умолчанию
   * Максимальное значение — 1000000
   */
-  priceForAdvert.required = true;
-  priceForAdvert.min = 1000;
-  priceForAdvert.max = 1000000;
+  priceForAdvert.setAttribute('required', 'required');
+  priceForAdvert.setAttribute('min', 1000);
+  priceForAdvert.setAttribute('max', 1000000);
   /* Заголовок объявления
   * Обязательное полей
   * Минимальная длина — 30 символов
   * Макcимальная длина — 100 символов
   */
-  title.required = true;
-  title.minLength = 30;
-  title.maxLength = 100;
+  title.setAttribute('required', 'required');
+  title.setAttribute('minLength', 30);
+  title.setAttribute('maxLength', 100);
 
   var clearForm = function () {
     var description = formInner.querySelector('#description');
@@ -317,17 +317,14 @@ var workWithForm = function () {
       case 'flat':
         priceForAdvert.max = 1000;
         priceForAdvert.min = 0;
-        priceForAdvert.value = 500;
         break;
       case 'hut':
         priceForAdvert.max = 10000;
         priceForAdvert.min = 1001;
-        priceForAdvert.value = 5000;
         break;
       case 'palace':
         priceForAdvert.max = 1000000;
         priceForAdvert.min = 10001;
-        priceForAdvert.value = 50000;
         break;
     }
   };
@@ -353,7 +350,7 @@ var workWithForm = function () {
   };
 
   var checkFieldValid = function (checkedField) {
-    if (!checkedField.validity.valid || checkedField.value === '') {
+    if (!checkedField.validity.valid) {
       checkedField.style.boxShadow = 'none';
       checkedField.style.border = '2px solid red';
       return false;
@@ -365,10 +362,10 @@ var workWithForm = function () {
 
   var formValidation = function (evt) {
     evt.preventDefault();
-    checkFieldValid(title);
-    checkFieldValid(priceForAdvert);
     if (isClicked(evt)) {
-      if (title.validity.valid && priceForAdvert.validity.valid) {
+      var validTitle = checkFieldValid(title);
+      var validPrice = checkFieldValid(priceForAdvert);
+      if (validPrice && validTitle) {
         clearForm();
       }
     }
