@@ -257,6 +257,7 @@ var workWithForm = function () {
   title.setAttribute('required', 'required');
   title.setAttribute('minLength', 30);
   title.setAttribute('maxLength', 100);
+  capacity.value = '1';
 
   var clearForm = function () {
     var description = formInner.querySelector('#description');
@@ -267,7 +268,7 @@ var workWithForm = function () {
     typeOfAdvert.value = 'flat';
     priceForAdvert.value = '';
     roomNumber.value = '1';
-    capacity.value = '3';
+    capacity.value = '1';
     description.value = '';
     address.value = '';
     timeCheckIn.value = '12';
@@ -289,11 +290,11 @@ var workWithForm = function () {
   //  Изменение стоимости предложения взависимости от типа
   var onChangeAdvertPrice = function () {
     switch (typeOfAdvert.value) {
-      case 'flat':
+      case 'hut':
         priceForAdvert.max = 1000;
         priceForAdvert.min = 0;
         break;
-      case 'hut':
+      case 'flat':
         priceForAdvert.max = 10000;
         priceForAdvert.min = 1001;
         break;
