@@ -101,22 +101,30 @@ var createPin = function (advert) {
   pin.setAttribute('tabindex', 0);
   return pin;
 };
-
-
-/*
-var eventCheck = {
+/* var eventCheck = {
   enterCode: 13,
   escCode: 27,
+  cliced: 'click',
   isEnterPresses: function (evt) {
-      return evt && evt.keyCode === this.enterCode;
-    },
+    return evt && evt.keyCode === this.enterCode;
+  },
   isEscapePressed: function (evt) {
     return evt && evt.keyCode === this.escCode;
-    },
+  },
   isClicked = function (evt) {
-   return evt.type === 'click';
-    }
-} */
+   return evt.type = this.clicked;
+  }
+}
+
+То есть, в функцию передается событие evt
+Например, onSelectTime. Тогда будет выглядеть как
+onCloseDialog(evt) {
+  if (evt.isEnterPressed || evt.isClicked) {
+    ...
+  }
+};
+Но оно так не работает
+*/
 
 // Событие есть и нажат esc
 var isEscapePressed = function (evt) {
@@ -277,43 +285,29 @@ var workWithForm = function () {
 
   var clearForm = function () {
     var description = formInner.querySelector('#description');
+    var formFeatures = document.getElementById('features');
+    var tagsInput = formFeatures.getElementsByTagName('input');
 
     title.value = '';
     typeOfAdvert.value = 'flat';
-    priceForAdvert.value = '1000';
+    priceForAdvert.value = '';
     roomNumber.value = '1';
-    capacity.value = '1';
+    capacity.value = '3';
     description.value = '';
     address.value = '';
     timeCheckIn.value = '12';
     timeCheckOut.value = '12';
-    var checkFeatures = formInner.querySelectorAll('.feature');
-    for (var i = 0; i < checkFeatures.length; i++) {
-      checkFeatures[i].children.feature.checked = false;
+    for (var i = 0; i < tagsInput.length; i++) {
+      tagsInput[i].checked = false;
     }
   };
 
 // При изменении «времени заезда» и «время выезда» автоматически выставляется точно таким же — например, если время заезда указано «после 14», то время выезда будет равно «до 14»
-  var switchTime = function (firstTime) {
-    var secondTime;
-    switch (firstTime) {
-      case '12':
-        secondTime = '12';
-        break;
-      case '13':
-        secondTime = '13';
-        break;
-      case '14':
-        secondTime = '14';
-        break;
-    }
-    return secondTime;
-  };
-  var onSelectCheckIn = function (evt) {
+  var onSelectTime = function (evt) {
     if (evt.srcElement.id === 'time') {
-      timeCheckOut.value = switchTime(timeCheckIn.value);
+      timeCheckOut.value = timeCheckIn.value;
     } else if (evt.srcElement.id === 'timeout') {
-      timeCheckIn.value = switchTime(timeCheckOut.value);
+      timeCheckIn.value = timeCheckOut.value;
     }
   };
 
@@ -321,22 +315,40 @@ var workWithForm = function () {
   var onChangeAdvertPrice = function () {
     switch (typeOfAdvert.value) {
       case 'flat':
-        priceForAdvert.value = '1000';
+        priceForAdvert.max = 1000;
+        priceForAdvert.min = 0;
+        priceForAdvert.value = 500;
         break;
       case 'hut':
-        priceForAdvert.value = '0';
+        priceForAdvert.max = 10000;
+        priceForAdvert.min = 1001;
+        priceForAdvert.value = 5000;
         break;
       case 'palace':
-        priceForAdvert.value = '100000';
+        priceForAdvert.max = 1000000;
+        priceForAdvert.min = 10001;
+        priceForAdvert.value = 50000;
         break;
     }
   };
+  var onCheangePriceAdvert = function () {
+    if (priceForAdvert.value <= 1000) {
+      typeOfAdvert.value = 'flat';
+    } else if (priceForAdvert.value <= 10000 && priceForAdvert.value > 1000) {
+      typeOfAdvert.value = 'hut';
+    } else if (priceForAdvert.value <= 1000000 && priceForAdvert.value > 10000) {
+      typeOfAdvert.value = 'palace';
+    } else {
+      priceForAdvert.style.border = '1px solid #d9d9d3';
+    }
+  };
+
   // Количество комнат связано с количеством гостей: 2 или 100 комнат — «для 3 гостей»; 1 комната — «не для гостей»
-  var onSelectRoom = function () {
-    if (roomNumber.value === '2' || roomNumber.value === '100') {
-      capacity.value = '3';
-    } else if (roomNumber.value === '1') {
-      capacity.value = '1';
+  var onSelectRoom = function (evt) {
+    if (evt.srcElement.id === 'room_number') {
+      capacity.value = (roomNumber.value === '1') ? 1 : 3;
+    } else if (evt.srcElement.id === 'capacity') {
+      roomNumber.value = (capacity.value === '1') ? 1 : 2;
     }
   };
 
@@ -353,25 +365,23 @@ var workWithForm = function () {
 
   var formValidation = function (evt) {
     evt.preventDefault();
+    checkFieldValid(title);
+    checkFieldValid(priceForAdvert);
     if (isClicked(evt)) {
-      var checkedTitle = checkFieldValid(title);
-      var checkedAddress = checkFieldValid(address);
-      var resultValue;
-      if (checkedAddress && checkedTitle) {
+      if (title.validity.valid && priceForAdvert.validity.valid) {
         clearForm();
-        resultValue = true;
-      } else {
-        resultValue = false;
       }
     }
-    return resultValue;
   };
 
-  submitButton.addEventListener('click', formValidation);
-  timeCheckIn.addEventListener('change', onSelectCheckIn);
-  timeCheckOut.addEventListener('change', onSelectCheckIn);
+  timeCheckIn.addEventListener('change', onSelectTime);
+  timeCheckOut.addEventListener('change', onSelectTime);
   typeOfAdvert.addEventListener('change', onChangeAdvertPrice);
+  priceForAdvert.addEventListener('change', onCheangePriceAdvert);
   roomNumber.addEventListener('change', onSelectRoom);
+  capacity.addEventListener('change', onSelectRoom);
+  submitButton.addEventListener('click', formValidation);
+
 };
 
 workWithForm();
