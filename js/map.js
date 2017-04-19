@@ -199,17 +199,15 @@ var onShowDialog = function (evt) {
    // Создание блока переменных в зависимости от того, куда ткнул пользователь мышкой
     var currentPin = '';
     var currentSrc = '';
-    var currentTarget = evt.target;
+    var chechedPin = evt.target;
     if (evt.target.className === 'rounded') {
-      currentPin = currentTarget.offsetParent;
-      currentSrc = currentTarget.getAttribute('src');
-    } else if (currentTarget.className === 'pin' || currentTarget.className === 'pin pin--active') {
-      currentPin = currentTarget;
-      currentSrc = currentTarget.children[0].getAttribute('src');
+      currentPin = chechedPin.offsetParent;
+      currentSrc = chechedPin.getAttribute('src');
+    } else if (chechedPin.className === 'pin' || chechedPin.className === 'pin pin--active') {
+      currentPin = chechedPin;
+      currentSrc = chechedPin.children[0].getAttribute('src');
     }
-    /* Если до этого у другого элемента существовал класс pin--active,
-    * то у этого элемента класс нужно убрать
-    */
+    // Если до этого у другого элемента существовал класс pin--active, то у этого элемента класс нужно убрать
     if (pinActive) {
       pinActive.classList.remove('pin--active');
     }
@@ -240,24 +238,24 @@ var workWithForm = function () {
   var submitButton = formInner.querySelector('.form__submit');
   var address = formInner.querySelector('#address');
 
-  /* Цена за ночь
-  *  Обязательное поле
-  * Числовое поле
-  * Минимальное значение — 1000 по умолчанию
-  * Максимальное значение — 1000000
-  */
+  var TITLE_MAXLENGTH = 100;
+  var TITLE_MINLENGTH = 30;
+  var PRICE_MAX = 1000000;
+  var PRICE_MIN = 1000;
+  var PRICE_HUT_MIN = 0;
+  var PRICE_HUT_MAX = 1000;
+  var PRICE_FLAT_MIN = 1001;
+  var PRICE_FLAT_MAX = 10000;
+  var PRICE_PALACE_MIN = 10001;
+  var PRICE_PALACE_MAX = 1000000;
+
   priceForAdvert.setAttribute('required', 'required');
-  priceForAdvert.setAttribute('min', 100);
-  priceForAdvert.setAttribute('max', 1000000);
-  /* Заголовок объявления
-  * Обязательное полей
-  * Минимальная длина — 30 символов
-  * Макcимальная длина — 100 символов
-  */
+  priceForAdvert.setAttribute('min', PRICE_MIN);
+  priceForAdvert.setAttribute('max', PRICE_MAX);
   title.setAttribute('required', 'required');
-  title.setAttribute('minLength', 30);
-  title.setAttribute('maxLength', 100);
-  capacity.value = '1';
+  title.setAttribute('minLength', TITLE_MINLENGTH);
+  title.setAttribute('maxLength', TITLE_MAXLENGTH);
+  capacity.value = 1;
 
   var clearForm = function () {
     var description = formInner.querySelector('#description');
@@ -267,19 +265,21 @@ var workWithForm = function () {
     title.value = '';
     typeOfAdvert.value = 'flat';
     priceForAdvert.value = '';
-    roomNumber.value = '1';
-    capacity.value = '1';
+    priceForAdvert.max = PRICE_MAX;
+    priceForAdvert.min = PRICE_MIN;
+    roomNumber.value = 1;
+    capacity.value = 1;
     description.value = '';
     address.value = '';
-    timeCheckIn.value = '12';
-    timeCheckOut.value = '12';
+    timeCheckIn.value = TIMES_CHECK_IN[0].substring(0,2);
+    timeCheckOut.value = TIMES_CHECK_OUT[0].substring(0,2);
     for (var i = 0; i < tagsInput.length; i++) {
       tagsInput[i].checked = false;
     }
   };
 
-// При изменении «времени заезда» и «время выезда» автоматически выставляется точно таким же — например, если время заезда указано «после 14», то время выезда будет равно «до 14»
-  var onSelectTime = function (evt) {
+  // При изменении «времени заезда» и «время выезда» автоматически выставляется точно таким же — например, если время заезда указано «после 14», то время выезда будет равно «до 14»
+  var onTimeInToTimeoutBinding = function (evt) {
     if (evt.srcElement.id === 'time') {
       timeCheckOut.value = timeCheckIn.value;
     } else if (evt.srcElement.id === 'timeout') {
@@ -288,78 +288,71 @@ var workWithForm = function () {
   };
 
   //  Изменение стоимости предложения взависимости от типа
-  var onChangeAdvertPrice = function () {
+  var onAdvertPriceRangeSetting = function () {
     switch (typeOfAdvert.value) {
       case 'hut':
-        priceForAdvert.max = 1000;
-        priceForAdvert.min = 0;
+        priceForAdvert.max = PRICE_HUT_MAX;
+        priceForAdvert.min = PRICE_HUT_MIN;
         break;
       case 'flat':
-        priceForAdvert.max = 10000;
-        priceForAdvert.min = 1001;
+        priceForAdvert.max = PRICE_FLAT_MAX;
+        priceForAdvert.min = PRICE_FLAT_MIN;
         break;
       case 'palace':
-        priceForAdvert.max = 1000000;
-        priceForAdvert.min = 10001;
+        priceForAdvert.max = PRICE_PALACE_MAX;
+        priceForAdvert.min = PRICE_PALACE_MIN;
         break;
     }
   };
-  var onCheangePriceAdvert = function () {
-    if (priceForAdvert.value <= 1000) {
-      typeOfAdvert.value = 'flat';
-    } else if (priceForAdvert.value <= 10000 && priceForAdvert.value > 1000) {
+  var onPriceToTypeBinding = function () {
+    if (priceForAdvert.value <= PRICE_HUT_MAX) {
       typeOfAdvert.value = 'hut';
-    } else if (priceForAdvert.value <= 1000000 && priceForAdvert.value > 10000) {
+    } else if (priceForAdvert.value <= PRICE_FLAT_MAX && priceForAdvert.value > PRICE_FLAT_MIN) {
+      typeOfAdvert.value = 'flat';
+    } else if (priceForAdvert.value <= PRICE_PALACE_MAX&& priceForAdvert.value > PRICE_PALACE_MIN) {
       typeOfAdvert.value = 'palace';
     } else {
       priceForAdvert.style.border = '1px solid #d9d9d3';
     }
   };
 
-  // Количество комнат связано с количеством гостей: 2 или 100 комнат — «для 3 гостей»; 1 комната — «не для гостей»
-  var onSelectRoom = function (evt) {
+  // Установление взаимосвязей между количеством комнат и вместимостью
+  var onRoomAndCapacityBinding = function (evt) {
     if (evt.srcElement.id === 'room_number') {
-      capacity.value = (roomNumber.value === '1') ? 1 : 3;
+      capacity.value = (roomNumber.value === '1') ? '1' : '3';
     } else if (evt.srcElement.id === 'capacity') {
-      roomNumber.value = (capacity.value === '1') ? 1 : 2;
+      roomNumber.value = (capacity.value === '1') ? '1' : '2';
     }
   };
 
   var checkFieldValid = function (checkedField) {
-    if (!checkedField.validity.valid) {
+    if (checkedField.validity.valid) {
+      checkedField.style.border = '1px solid #d9d9d3';
+      return true;
+    } else {
       checkedField.style.boxShadow = 'none';
       checkedField.style.border = '2px solid red';
       return false;
-    } else {
-      checkedField.style.border = '1px solid #d9d9d3';
-      return true;
     }
   };
 
-  var formValidation = function (evt) {
+  var onButtonFormValidate = function (evt) {
+    var validTitle = checkFieldValid(title);
+    var validPrice = checkFieldValid(priceForAdvert);
     evt.preventDefault();
-    if (eventCheck.isClicked(evt)) {
-      var validTitle = checkFieldValid(title);
-      var validPrice = checkFieldValid(priceForAdvert);
       if (validTitle && validPrice) {
         clearForm();
       }
-    }
   };
 
-  timeCheckIn.addEventListener('change', onSelectTime);
-  timeCheckOut.addEventListener('change', onSelectTime);
-  typeOfAdvert.addEventListener('change', onChangeAdvertPrice);
-  priceForAdvert.addEventListener('change', onCheangePriceAdvert);
-  roomNumber.addEventListener('change', onSelectRoom);
-  capacity.addEventListener('change', onSelectRoom);
-  submitButton.addEventListener('click', formValidation);
+  timeCheckIn.addEventListener('change', onTimeInToTimeoutBinding);
+  timeCheckOut.addEventListener('change', onTimeInToTimeoutBinding);
+  typeOfAdvert.addEventListener('change', onAdvertPriceRangeSetting);
+  priceForAdvert.addEventListener('change', onPriceToTypeBinding);
+  roomNumber.addEventListener('change', onRoomAndCapacityBinding);
+  capacity.addEventListener('change', onRoomAndCapacityBinding);
+  submitButton.addEventListener('click', onButtonFormValidate);
 
 };
 
 workWithForm();
-
-/* Проверка правильности введенных данных
-
-При отправке формы нужно проверить правильно ли заполнены поля и если какие-то поля заполнены неверно, то нужно выделить неверные поля красной рамкой
-После отправки формы все значения должны сбрасываться на те, что были по-умолчанию */
