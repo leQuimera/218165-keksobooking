@@ -279,7 +279,7 @@ var workWithForm = function () {
   };
 
   // При изменении «времени заезда» и «время выезда» автоматически выставляется точно таким же — например, если время заезда указано «после 14», то время выезда будет равно «до 14»
-  var onTimeInToTimeoutBinding = function (evt) {
+  var onTimeInToTimeoutChange = function (evt) {
     if (evt.srcElement.id === 'time') {
       timeCheckOut.value = timeCheckIn.value;
     } else if (evt.srcElement.id === 'timeout') {
@@ -288,7 +288,7 @@ var workWithForm = function () {
   };
 
   //  Изменение стоимости предложения взависимости от типа
-  var onAdvertPriceRangeSetting = function () {
+  var onAdvertPriceChange = function () {
     switch (typeOfAdvert.value) {
       case 'hut':
         priceForAdvert.max = PRICE_HUT_MAX;
@@ -304,7 +304,7 @@ var workWithForm = function () {
         break;
     }
   };
-  var onPriceToTypeBinding = function () {
+  var onPriceChange = function () {
     if (priceForAdvert.value <= PRICE_HUT_MAX) {
       typeOfAdvert.value = 'hut';
     } else if (priceForAdvert.value <= PRICE_FLAT_MAX && priceForAdvert.value > PRICE_FLAT_MIN) {
@@ -317,7 +317,7 @@ var workWithForm = function () {
   };
 
   // Установление взаимосвязей между количеством комнат и вместимостью
-  var onRoomAndCapacityBinding = function (evt) {
+  var onRoomAndCapacityChange = function (evt) {
     if (evt.srcElement.id === 'room_number') {
       capacity.value = (roomNumber.value === '1') ? '1' : '3';
     } else if (evt.srcElement.id === 'capacity') {
@@ -336,7 +336,7 @@ var workWithForm = function () {
     }
   };
 
-  var onButtonFormValidate = function (evt) {
+  var onSubmitButtonClick = function (evt) {
     var validTitle = checkFieldValid(title);
     var validPrice = checkFieldValid(priceForAdvert);
     if (validTitle && validPrice) {
@@ -345,13 +345,13 @@ var workWithForm = function () {
     }
   };
 
-  timeCheckIn.addEventListener('change', onTimeInToTimeoutBinding);
-  timeCheckOut.addEventListener('change', onTimeInToTimeoutBinding);
-  typeOfAdvert.addEventListener('change', onAdvertPriceRangeSetting);
-  priceForAdvert.addEventListener('change', onPriceToTypeBinding);
-  roomNumber.addEventListener('change', onRoomAndCapacityBinding);
-  capacity.addEventListener('change', onRoomAndCapacityBinding);
-  submitButton.addEventListener('click', onButtonFormValidate);
+  timeCheckIn.addEventListener('change', onTimeInToTimeoutChange);
+  timeCheckOut.addEventListener('change', onTimeInToTimeoutChange);
+  typeOfAdvert.addEventListener('change', onAdvertPriceChange);
+  priceForAdvert.addEventListener('change', onPriceChange);
+  roomNumber.addEventListener('change', onRoomAndCapacityChange);
+  capacity.addEventListener('change', onRoomAndCapacityChange);
+  submitButton.addEventListener('click', onSubmitButtonClick);
 
 };
 
