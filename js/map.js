@@ -230,10 +230,10 @@ var workWithForm = function () {
   var formInner = document.querySelector('.notice__form');
   var timeCheckIn = formInner.querySelector('#time');
   var timeCheckOut = formInner.querySelector('#timeout');
-  var typeOfAdvert = formInner.querySelector('#type');
-  var priceForAdvert = formInner.querySelector('#price');
+  var advertType = formInner.querySelector('#type');
+  var advertPrice = formInner.querySelector('#price');
   var roomNumber = formInner.querySelector('#room_number');
-  var capacity = formInner.querySelector('#capacity');
+  var roomCapacity = formInner.querySelector('#capacity');
   var title = formInner.querySelector('#title');
   var submitButton = formInner.querySelector('.form__submit');
   var address = formInner.querySelector('#address');
@@ -249,13 +249,13 @@ var workWithForm = function () {
   var PRICE_PALACE_MIN = 10001;
   var PRICE_PALACE_MAX = 1000000;
 
-  priceForAdvert.setAttribute('required', 'required');
-  priceForAdvert.setAttribute('min', PRICE_MIN);
-  priceForAdvert.setAttribute('max', PRICE_MAX);
+  advertPrice.setAttribute('required', 'required');
+  advertPrice.setAttribute('min', PRICE_MIN);
+  advertPrice.setAttribute('max', PRICE_MAX);
   title.setAttribute('required', 'required');
   title.setAttribute('minLength', TITLE_MINLENGTH);
   title.setAttribute('maxLength', TITLE_MAXLENGTH);
-  capacity.value = 1;
+  roomCapacity.value = 1;
 
   var clearForm = function () {
     var description = formInner.querySelector('#description');
@@ -263,12 +263,12 @@ var workWithForm = function () {
     var tagsInput = formFeatures.getElementsByTagName('input');
 
     title.value = '';
-    typeOfAdvert.value = 'flat';
-    priceForAdvert.value = '';
-    priceForAdvert.max = PRICE_MAX;
-    priceForAdvert.min = PRICE_MIN;
+    advertType.value = 'flat';
+    advertPrice.value = '';
+    advertPrice.max = PRICE_MAX;
+    advertPrice.min = PRICE_MIN;
     roomNumber.value = 1;
-    capacity.value = 1;
+    roomCapacity.value = 1;
     description.value = '';
     address.value = '';
     timeCheckIn.value = TIMES_CHECK_IN[0].substring(0, 2);
@@ -288,40 +288,40 @@ var workWithForm = function () {
   };
 
   //  Изменение стоимости предложения взависимости от типа
-  var onAdvertPriceChange = function () {
-    switch (typeOfAdvert.value) {
+  var onAdvertTypeChange = function () {
+    switch (advertType.value) {
       case 'hut':
-        priceForAdvert.max = PRICE_HUT_MAX;
-        priceForAdvert.min = PRICE_HUT_MIN;
+        advertPrice.max = PRICE_HUT_MAX;
+        advertPrice.min = PRICE_HUT_MIN;
         break;
       case 'flat':
-        priceForAdvert.max = PRICE_FLAT_MAX;
-        priceForAdvert.min = PRICE_FLAT_MIN;
+        advertPrice.max = PRICE_FLAT_MAX;
+        advertPrice.min = PRICE_FLAT_MIN;
         break;
       case 'palace':
-        priceForAdvert.max = PRICE_PALACE_MAX;
-        priceForAdvert.min = PRICE_PALACE_MIN;
+        advertPrice.max = PRICE_PALACE_MAX;
+        advertPrice.min = PRICE_PALACE_MIN;
         break;
     }
   };
   var onPriceChange = function () {
-    if (priceForAdvert.value <= PRICE_HUT_MAX) {
-      typeOfAdvert.value = 'hut';
-    } else if (priceForAdvert.value <= PRICE_FLAT_MAX && priceForAdvert.value > PRICE_FLAT_MIN) {
-      typeOfAdvert.value = 'flat';
-    } else if (priceForAdvert.value <= PRICE_PALACE_MAX && priceForAdvert.value > PRICE_PALACE_MIN) {
-      typeOfAdvert.value = 'palace';
+    if (advertPrice.value <= PRICE_HUT_MAX) {
+      advertType.value = 'hut';
+    } else if (advertPrice.value <= PRICE_FLAT_MAX && advertPrice.value > PRICE_FLAT_MIN) {
+      advertType.value = 'flat';
+    } else if (advertPrice.value <= PRICE_PALACE_MAX && advertPrice.value > PRICE_PALACE_MIN) {
+      advertType.value = 'palace';
     } else {
-      priceForAdvert.style.border = '1px solid #d9d9d3';
+      advertPrice.style.border = '1px solid #d9d9d3';
     }
   };
 
   // Установление взаимосвязей между количеством комнат и вместимостью
   var onRoomAndCapacityChange = function (evt) {
     if (evt.srcElement.id === 'room_number') {
-      capacity.value = (roomNumber.value === '1') ? '1' : '3';
+      roomCapacity.value = (roomNumber.value === '1') ? '1' : '3';
     } else if (evt.srcElement.id === 'capacity') {
-      roomNumber.value = (capacity.value === '1') ? '1' : '2';
+      roomNumber.value = (roomCapacity.value === '1') ? '1' : '2';
     }
   };
 
@@ -338,7 +338,7 @@ var workWithForm = function () {
 
   var onSubmitButtonClick = function (evt) {
     var validTitle = checkFieldValid(title);
-    var validPrice = checkFieldValid(priceForAdvert);
+    var validPrice = checkFieldValid(advertPrice);
     if (validTitle && validPrice) {
       evt.preventDefault();
       clearForm();
@@ -347,10 +347,10 @@ var workWithForm = function () {
 
   timeCheckIn.addEventListener('change', onTimeInToTimeoutChange);
   timeCheckOut.addEventListener('change', onTimeInToTimeoutChange);
-  typeOfAdvert.addEventListener('change', onAdvertPriceChange);
-  priceForAdvert.addEventListener('change', onPriceChange);
+  advertType.addEventListener('change', onAdvertTypeChange);
+  advertPrice.addEventListener('change', onPriceChange);
   roomNumber.addEventListener('change', onRoomAndCapacityChange);
-  capacity.addEventListener('change', onRoomAndCapacityChange);
+  roomCapacity.addEventListener('change', onRoomAndCapacityChange);
   submitButton.addEventListener('click', onSubmitButtonClick);
 
 };
