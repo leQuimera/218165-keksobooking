@@ -271,8 +271,8 @@ var workWithForm = function () {
     capacity.value = 1;
     description.value = '';
     address.value = '';
-    timeCheckIn.value = TIMES_CHECK_IN[0].substring(0,2);
-    timeCheckOut.value = TIMES_CHECK_OUT[0].substring(0,2);
+    timeCheckIn.value = TIMES_CHECK_IN[0].substring(0, 2);
+    timeCheckOut.value = TIMES_CHECK_OUT[0].substring(0, 2);
     for (var i = 0; i < tagsInput.length; i++) {
       tagsInput[i].checked = false;
     }
@@ -309,7 +309,7 @@ var workWithForm = function () {
       typeOfAdvert.value = 'hut';
     } else if (priceForAdvert.value <= PRICE_FLAT_MAX && priceForAdvert.value > PRICE_FLAT_MIN) {
       typeOfAdvert.value = 'flat';
-    } else if (priceForAdvert.value <= PRICE_PALACE_MAX&& priceForAdvert.value > PRICE_PALACE_MIN) {
+    } else if (priceForAdvert.value <= PRICE_PALACE_MAX && priceForAdvert.value > PRICE_PALACE_MIN) {
       typeOfAdvert.value = 'palace';
     } else {
       priceForAdvert.style.border = '1px solid #d9d9d3';
@@ -339,10 +339,10 @@ var workWithForm = function () {
   var onButtonFormValidate = function (evt) {
     var validTitle = checkFieldValid(title);
     var validPrice = checkFieldValid(priceForAdvert);
-    evt.preventDefault();
-      if (validTitle && validPrice) {
-        clearForm();
-      }
+    if (validTitle && validPrice) {
+      evt.preventDefault();
+      clearForm();
+    }
   };
 
   timeCheckIn.addEventListener('change', onTimeInToTimeoutBinding);
