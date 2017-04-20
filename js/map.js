@@ -100,24 +100,9 @@ var createPin = function (advert) {
   return pin;
 };
 
-var eventCheck = {
-  enterCode: 13,
-  escCode: 27,
-  clicked: 'click',
-  isEnterPressed: function (evt) {
-    return evt && evt.keyCode === this.enterCode;
-  },
-  isEscapePressed: function (evt) {
-    return evt && evt.keyCode === this.escCode;
-  },
-  isClicked: function (evt) {
-    return evt.type === this.clicked;
-  }
-};
-
 // Закрытие окна с абьявлением
 var onCloseDialog = function (evt) {
-  if (eventCheck.isEnterPressed(evt) || eventCheck.isClicked(evt)) {
+  if (window.eventCheck.isEnterPressed(evt) || window.eventCheck.isClicked(evt)) {
     if (pinActive) {
       pinActive.classList.remove('pin--active');
     }
@@ -128,7 +113,7 @@ var onCloseDialog = function (evt) {
 
 // Закрытие окна диалога при нажатии esc
 var onCloseDialogEsc = function (evt) {
-  if (eventCheck.isEscapePressed(evt)) {
+  if (window.eventCheck.isEscapePressed(evt)) {
     if (pinActive) {
       pinActive.classList.remove('pin--active');
       pinActive = '';
@@ -195,7 +180,7 @@ var searchAdvert = function (currentSrc) {
 
 // Показать объявление, если на пин кликнули или нажали по enter
 var onShowDialog = function (evt) {
-  if (eventCheck.isEnterPressed(evt) || eventCheck.isClicked(evt)) {
+  if (window.eventCheck.isEnterPressed(evt) || window.eventCheck.isClicked(evt)) {
    // Создание блока переменных в зависимости от того, куда ткнул пользователь мышкой
     var currentPin = '';
     var currentSrc = '';
