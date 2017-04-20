@@ -89,10 +89,11 @@ var renderPins = function (adverts) {
     fragment.appendChild(createPin(adverts[i]));
   }
   pinsMap.appendChild(fragment);
+  dialogWindow.style.display = 'none';
 };
 
 // Объявление и все пины созданы,  нанесены  на карту
-var listOfAdverts = window.dataSet(dialogWindow);
+var listOfAdverts = window.dataSet();
 renderPins(listOfAdverts);
 
 // Поиск номера нужного объявления по данным фотографии
