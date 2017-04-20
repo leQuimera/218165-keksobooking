@@ -34,7 +34,7 @@ window.dataSet = (function () {
   };
 
   // Создание объявления
-  var createAdvert = function (timeCheckIn, timeCheckOut) {
+  var createAdvert = function () {
     var locationX = getRandomInt(300, 900);
     var locationY = getRandomInt(100, 500);
 
@@ -64,12 +64,11 @@ window.dataSet = (function () {
     };
   };
 
-  return function (dialogWindow) {
+  return function () {
     var advertsList = [];
     for (var i = 0; i < ADDRESS_COUNT; i++) {
       advertsList.push(createAdvert());
     }
-    dialogWindow.style.display = 'none';
     return advertsList;
   };
 })();
