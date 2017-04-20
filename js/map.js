@@ -1,8 +1,5 @@
 'use strict';
 
-var ADDRESS_COUNT = 8;
-var TIMES_CHECK_IN = ['12:00', '13:00', '14:00'];
-var TIMES_CHECK_OUT = ['12:00', '13:00', '14:00'];
 var OFFER_TYPE_NAMES = {
   'flat': 'квартира',
   'house': 'дом',
@@ -95,7 +92,7 @@ var renderPins = function (adverts) {
 };
 
 // Объявление и все пины созданы,  нанесены  на карту
-var listOfAdverts = window.dataSet(ADDRESS_COUNT, TIMES_CHECK_IN, TIMES_CHECK_OUT, dialogWindow);
+var listOfAdverts = window.dataSet(dialogWindow);
 renderPins(listOfAdverts);
 
 // Поиск номера нужного объявления по данным фотографии
@@ -186,8 +183,8 @@ var workWithForm = function () {
     roomCapacity.value = 1;
     description.value = '';
     address.value = '';
-    timeCheckIn.value = TIMES_CHECK_IN[0].substring(0, 2);
-    timeCheckOut.value = TIMES_CHECK_OUT[0].substring(0, 2);
+    timeCheckIn.value = 12;
+    timeCheckOut.value = 12;
     for (var i = 0; i < tagsInput.length; i++) {
       tagsInput[i].checked = false;
     }

@@ -5,6 +5,9 @@ window.dataSet = (function () {
   var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
   var OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var OFFER_TYPES = ['flat', 'house', 'bungalo'];
+  var TIMES_CHECK_IN = ['12:00', '13:00', '14:00'];
+  var TIMES_CHECK_OUT = ['12:00', '13:00', '14:00'];
+  var ADDRESS_COUNT = 8;
 
   // Возврат случайного значения
   var getRandomInt = function (min, max) {
@@ -34,7 +37,8 @@ window.dataSet = (function () {
   var createAdvert = function (timeCheckIn, timeCheckOut) {
     var locationX = getRandomInt(300, 900);
     var locationY = getRandomInt(100, 500);
-    var poster = {
+
+    return {
       'author': {
         'avatar': 'img/avatars/user' + getRandomUniqueItem(USER_ID_NUMBERS) + '.png'
       },
@@ -46,8 +50,8 @@ window.dataSet = (function () {
         'type': getRandomArrayItem(OFFER_TYPES),
         'rooms': getRandomInt(1, 5),
         'guests': getRandomInt(1, 15),
-        'checkin': getRandomArrayItem(timeCheckIn),
-        'checkout': getRandomArrayItem(timeCheckOut),
+        'checkin': getRandomArrayItem(TIMES_CHECK_IN),
+        'checkout': getRandomArrayItem(TIMES_CHECK_OUT),
         'features': createFeatures(),
         'description': '',
         'photos': []
@@ -58,13 +62,12 @@ window.dataSet = (function () {
         'y': locationY
       }
     };
-    return poster;
   };
 
-  return function (avdertsCount, timeCheckIn, timeCheckOut, dialogWindow) {
+  return function (dialogWindow) {
     var advertsList = [];
-    for (var i = 0; i < avdertsCount; i++) {
-      advertsList.push(createAdvert(timeCheckIn, timeCheckOut));
+    for (var i = 0; i < ADDRESS_COUNT; i++) {
+      advertsList.push(createAdvert());
     }
     dialogWindow.style.display = 'none';
     return advertsList;
