@@ -1,5 +1,7 @@
 'use strict';
 
+// Вспомогательные функции
+
 window.eventCheck = (function () {
   var enterCode = 13;
   var escCode = 27;
