@@ -2,7 +2,7 @@
 
 // card.js — модуль для отрисовки элемента на карточке
 
-window.cartSet = (function () {
+window.cardSet = (function () {
   var OFFER_TYPE_NAMES = {
     'flat': 'квартира',
     'house': 'дом',

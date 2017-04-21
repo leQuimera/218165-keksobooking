@@ -20,10 +20,13 @@ window.formSet = (function () {
   var PRICE_MIN = 1000;
   var PRICE_HUT_MIN = 0;
   var PRICE_HUT_MAX = 1000;
-  var PRICE_FLAT_MIN = 1001;
+  var PRICE_FLAT_MIN = 1000;
   var PRICE_FLAT_MAX = 10000;
-  var PRICE_PALACE_MIN = 10001;
+  var PRICE_PALACE_MIN = 10000;
   var PRICE_PALACE_MAX = 1000000;
+  var ADVERT_TYPE = 'flat';
+  var ROOM_CAPACITY = 1;
+  var START_TIME = 12;
 
   advertPrice.setAttribute('required', 'required');
   advertPrice.setAttribute('min', PRICE_MIN);
@@ -32,23 +35,24 @@ window.formSet = (function () {
   title.setAttribute('minLength', TITLE_MINLENGTH);
   title.setAttribute('maxLength', TITLE_MAXLENGTH);
   roomCapacity.value = 1;
+  address.readOnly = true;
 
-  var clearForm = function () {
+  var resetForm = function () {
     var description = formInner.querySelector('#description');
     var formFeatures = document.getElementById('features');
     var tagsInput = formFeatures.getElementsByTagName('input');
 
     title.value = '';
-    advertType.value = 'flat';
+    advertType.value = ADVERT_TYPE;
     advertPrice.value = '';
     advertPrice.max = PRICE_MAX;
     advertPrice.min = PRICE_MIN;
-    roomNumber.value = 1;
-    roomCapacity.value = 1;
+    roomNumber.value = ROOM_CAPACITY;
+    roomCapacity.value = ROOM_CAPACITY;
     description.value = '';
     address.value = '';
-    timeCheckIn.value = 12;
-    timeCheckOut.value = 12;
+    timeCheckIn.value = START_TIME;
+    timeCheckOut.value = START_TIME;
     for (var i = 0; i < tagsInput.length; i++) {
       tagsInput[i].checked = false;
     }
@@ -107,7 +111,6 @@ window.formSet = (function () {
       checkedField.style.border = '1px solid #d9d9d3';
       return true;
     } else {
-      checkedField.style.boxShadow = 'none';
       checkedField.style.border = '2px solid red';
       return false;
     }
@@ -118,7 +121,7 @@ window.formSet = (function () {
     var validPrice = checkFieldValid(advertPrice);
     if (validTitle && validPrice) {
       evt.preventDefault();
-      clearForm();
+      resetForm();
     }
   };
 
