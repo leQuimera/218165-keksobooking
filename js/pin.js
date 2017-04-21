@@ -6,6 +6,7 @@ window.pinSet = (function () {
   var pinsMap = document.querySelector('.tokyo__pin-map');
   var pinActive = document.querySelector('.pin--active');
   var dialogWindow = document.querySelector('.dialog');
+  var listOfAdverts = window.dataSet();
 
   // Создание пина для объявления
   var createPin = function (advert) {
@@ -24,7 +25,7 @@ window.pinSet = (function () {
   };
 
   // Поиск номера нужного объявления по данным фотографии
-  var searchAdvert = function (currentSrc, listOfAdverts) {
+  var searchAdvert = function (currentSrc) {
     for (var i = 0; i < listOfAdverts.length; i++) {
       if (listOfAdverts[i].author.avatar === currentSrc) {
         break;
@@ -34,7 +35,7 @@ window.pinSet = (function () {
   };
 
   // Показать объявление, если на пин кликнули или нажали по enter
-  var onShowDialog = function (evt, listOfAdverts) {
+  var onShowDialog = function (evt) {
     if (window.eventCheck.isEnterPressed(evt) || window.eventCheck.isClicked(evt)) {
       // Создание блока переменных в зависимости от того, куда ткнул пользователь мышкой
       var currentPin = '';
@@ -59,7 +60,7 @@ window.pinSet = (function () {
     }
   };
 
-  return function (listOfAdverts) {
+  return function () {
     // Нанесение пинов на карту
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < listOfAdverts.length; i++) {
