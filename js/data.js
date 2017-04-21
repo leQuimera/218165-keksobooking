@@ -30,7 +30,7 @@ window.dataSet = (function () {
 
     return {
       'author': {
-        'avatar': 'img/avatars/user' +window.utilsSet.getRandomUniqueItem(USER_ID_NUMBERS) + '.png'
+        'avatar': 'img/avatars/user' + window.utilsSet.getRandomUniqueItem(USER_ID_NUMBERS) + '.png'
       },
 
       'offer': {
