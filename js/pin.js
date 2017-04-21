@@ -36,7 +36,7 @@ window.pinSet = (function () {
 
   // Показать объявление, если на пин кликнули или нажали по enter
   var onShowDialog = function (evt) {
-    if (window.eventCheck.isEnterPressed(evt) || window.eventCheck.isClicked(evt)) {
+    if (window.utilsSet.isEnterPressed(evt) || window.utilsSet.isClicked(evt)) {
       // Создание блока переменных в зависимости от того, куда ткнул пользователь мышкой
       var currentPin = '';
       var currentSrc = '';

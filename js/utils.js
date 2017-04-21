@@ -2,7 +2,7 @@
 
 // Вспомогательные функции
 
-window.eventCheck = (function () {
+window.utilsSet = (function () {
   var enterCode = 13;
   var escCode = 27;
   var clicked = 'click';
@@ -16,6 +16,18 @@ window.eventCheck = (function () {
     },
     isClicked: function (evt) {
       return evt.type === clicked;
+    },
+    // Возврат случайного значения
+    getRandomInt: function (min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
+    // Возврат случайного эллемента из массива
+    getRandomArrayItem: function (array) {
+      return array[window.utilsSet.getRandomInt(0, array.length - 1)];
+    },
+    // Возврат уникального эллемента из массива
+    getRandomUniqueItem: function (array) {
+      return array.splice(window.utilsSet.getRandomInt(0, array.length - 1), 1);
     }
   };
 })();

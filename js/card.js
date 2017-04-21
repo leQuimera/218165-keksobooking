@@ -14,7 +14,7 @@ window.cartSet = (function () {
 
   // Закрытие окна диалога при нажатии esc
   var onCloseDialogEsc = function (evt) {
-    if (window.eventCheck.isEscapePressed(evt)) {
+    if (window.utilsSet.isEscapePressed(evt)) {
       pinActive = document.querySelector('.pin--active');
       if (pinActive) {
         pinActive.classList.remove('pin--active');
@@ -24,9 +24,9 @@ window.cartSet = (function () {
     }
   };
 
-  // Закрытие окна с абьявлением
+  // Закрытие окна с объявлением
   var onCloseDialog = function (evt) {
-    if (window.eventCheck.isEnterPressed(evt) || window.eventCheck.isClicked(evt)) {
+    if (window.utilsSet.isEnterPressed(evt) || window.utilsSet.isClicked(evt)) {
       pinActive = document.querySelector('.pin--active');
       if (pinActive) {
         pinActive.classList.remove('pin--active');

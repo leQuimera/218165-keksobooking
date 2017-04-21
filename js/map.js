@@ -35,6 +35,4 @@
  */
 
 // Объявление и все пины созданы,  нанесены  на карту
-var listOfAdverts;
-window.listOfAdverts = window.dataSet();
-window.pinSet(listOfAdverts);
+window.pinSet();
