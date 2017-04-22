@@ -2,7 +2,7 @@
 
 // card.js — модуль для отрисовки элемента на карточке
 
-window.cartSet = (function () {
+window.cardSet = (function () {
   var OFFER_TYPE_NAMES = {
     'flat': 'квартира',
     'house': 'дом',
@@ -16,7 +16,7 @@ window.cartSet = (function () {
   var onCloseDialogEsc = function (evt) {
     if (window.utilsSet.isEscapePressed(evt)) {
       pinActive = document.querySelector('.pin--active');
-      if (pinActive) {
+      if (!pinActive === null) {
         pinActive.classList.remove('pin--active');
         pinActive = '';
       }
@@ -28,7 +28,7 @@ window.cartSet = (function () {
   var onCloseDialog = function (evt) {
     if (window.utilsSet.isEnterPressed(evt) || window.utilsSet.isClicked(evt)) {
       pinActive = document.querySelector('.pin--active');
-      if (pinActive) {
+      if (!pinActive === null) {
         pinActive.classList.remove('pin--active');
       }
       dialogWindow.style.display = 'none';
