@@ -41,6 +41,8 @@ var pinHandle = document.querySelector('.pin__main');
 var addressField = document.querySelector('#address');
 var currentCoords = null;
 
+pinHandle.setAttribute('draggable', true);
+
 // "Взять пин",  определить стартовые координаты, включить дальнейшее прослушивание событий
 var onPinMousDown = function (evt) {
   evt.preventDefault();
