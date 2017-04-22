@@ -14,11 +14,10 @@ window.pinSet = (function () {
     var img = document.createElement('img');
     var PIN_WIDTH = 56;
     var PIN_HEIGHT = 75;
-    var SKY_OFFSET = 100; // Чтобы пины не рисовались на небе
 
     pin.className = 'pin';
     pin.style.left = advert.location.x - PIN_WIDTH / 2 + 'px';
-    pin.style.top = advert.location.y - PIN_HEIGHT + SKY_OFFSET + 'px';
+    pin.style.top = advert.location.y - PIN_HEIGHT + 'px';
     img.className = 'rounded';
     img.width = 40;
     img.height = 40;
