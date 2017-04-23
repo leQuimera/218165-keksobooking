@@ -26,7 +26,7 @@ window.dataSet = (function () {
   // Создание объявления
   var createAdvert = function () {
     var locationX = window.utilsSet.getRandomInt(300, 900);
-    var locationY = window.utilsSet.getRandomInt(100, 500);
+    var locationY = window.utilsSet.getRandomInt(200, 500);
 
     return {
       'author': {

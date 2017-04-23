@@ -58,52 +58,42 @@ window.formSet = (function () {
     }
   };
 
-  // При изменении «времени заезда» и «время выезда» автоматически выставляется точно таким же — например, если время заезда указано «после 14», то время выезда будет равно «до 14»
-  var onTimeInToTimeoutChange = function (evt) {
-    if (evt.srcElement.id === 'time') {
-      timeCheckOut.value = timeCheckIn.value;
-    } else if (evt.srcElement.id === 'timeout') {
-      timeCheckIn.value = timeCheckOut.value;
-    }
+  // При изменении «времени заезда» и «время выезда» автоматически выставляется точно таким же
+  var timeInToTimeoutChange = function (fieldFirst, valueSecond) {
+    fieldFirst.value = valueSecond;
   };
 
   //  Изменение стоимости предложения взависимости от типа
-  var onAdvertTypeChange = function () {
-    switch (advertType.value) {
+  var advertTypeChange = function (fieldFirst, valueSecond) {
+    switch (valueSecond) {
       case 'hut':
-        advertPrice.max = PRICE_HUT_MAX;
-        advertPrice.min = PRICE_HUT_MIN;
+        fieldFirst.max = PRICE_HUT_MAX;
+        fieldFirst.min = PRICE_HUT_MIN;
         break;
       case 'flat':
-        advertPrice.max = PRICE_FLAT_MAX;
-        advertPrice.min = PRICE_FLAT_MIN;
+        fieldFirst.max = PRICE_FLAT_MAX;
+        fieldFirst.min = PRICE_FLAT_MIN;
         break;
       case 'palace':
-        advertPrice.max = PRICE_PALACE_MAX;
-        advertPrice.min = PRICE_PALACE_MIN;
+        fieldFirst.max = PRICE_PALACE_MAX;
+        fieldFirst.min = PRICE_PALACE_MIN;
         break;
     }
   };
 
-  var onPriceChange = function () {
-    if (advertPrice.value <= PRICE_HUT_MAX) {
-      advertType.value = 'hut';
-    } else if (advertPrice.value <= PRICE_FLAT_MAX && advertPrice.value > PRICE_FLAT_MIN) {
-      advertType.value = 'flat';
-    } else if (advertPrice.value <= PRICE_PALACE_MAX && advertPrice.value > PRICE_PALACE_MIN) {
-      advertType.value = 'palace';
-    } else {
-      advertPrice.style.border = '1px solid #d9d9d3';
+  var priceChange = function (fieldFirst, valueSecond) {
+    if (valueSecond <= PRICE_HUT_MAX) {
+      fieldFirst.value = 'hut';
+    } else if (valueSecond <= PRICE_FLAT_MAX && valueSecond > PRICE_FLAT_MIN) {
+      fieldFirst.value = 'flat';
+    } else if (valueSecond <= PRICE_PALACE_MAX && valueSecond > PRICE_PALACE_MIN) {
+      fieldFirst.value = 'palace';
     }
   };
 
   // Установление взаимосвязей между количеством комнат и вместимостью
-  var onRoomAndCapacityChange = function (evt) {
-    if (evt.srcElement.id === 'room_number') {
-      roomCapacity.value = (roomNumber.value === '1') ? '1' : '3';
-    } else if (evt.srcElement.id === 'capacity') {
-      roomNumber.value = (roomCapacity.value === '1') ? '1' : '2';
-    }
+  var roomAndCapacityChange = function (fieldFirst, valueSecond) {
+    fieldFirst.value = (valueSecond === '1') ? '1' : '2';
   };
 
   var checkFieldValid = function (checkedField) {
@@ -125,12 +115,12 @@ window.formSet = (function () {
     }
   };
 
-  timeCheckIn.addEventListener('change', onTimeInToTimeoutChange);
-  timeCheckOut.addEventListener('change', onTimeInToTimeoutChange);
-  advertType.addEventListener('change', onAdvertTypeChange);
-  advertPrice.addEventListener('change', onPriceChange);
-  roomNumber.addEventListener('change', onRoomAndCapacityChange);
-  roomCapacity.addEventListener('change', onRoomAndCapacityChange);
+  window.synchronizeFields(timeCheckOut, timeCheckIn, timeInToTimeoutChange);
+  window.synchronizeFields(timeCheckIn, timeCheckOut, timeInToTimeoutChange);
+  window.synchronizeFields(roomCapacity, roomNumber, roomAndCapacityChange);
+  window.synchronizeFields(roomNumber, roomCapacity, roomAndCapacityChange);
+  window.synchronizeFields(advertPrice, advertType, priceChange);
+  window.synchronizeFields(advertType, advertPrice, advertTypeChange);
   submitButton.addEventListener('click', onSubmitButtonClick);
 
 })();
