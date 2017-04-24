@@ -22,6 +22,7 @@ window.cardSet = (function () {
       }
       dialogWindow.style.display = 'none';
       document.removeEventListener('keydown', onDialogCose);
+      dialogClose.removeEventListener('click', onDialogCose);
     }
   };
 
@@ -58,6 +59,5 @@ window.cardSet = (function () {
     dialogWindow.style.display = 'block';
     document.addEventListener('keydown', onDialogCose);
     dialogClose.addEventListener('click', onDialogCose);
-    dialogClose.addEventListener('keydown', onDialogCose);
   };
 })();

@@ -26,6 +26,7 @@ window.dataSet = (function () {
   // Создание объявления
   var createAdvert = function () {
     var locationX = window.utilsSet.getRandomInt(300, 900);
+    // Диапозон для Y (200, 500) выбран осознанно, чтобы пин не попадал в небо
     var locationY = window.utilsSet.getRandomInt(200, 500);
 
     return {
