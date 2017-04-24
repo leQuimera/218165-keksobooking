@@ -4,7 +4,7 @@ window.load = (function (url, onLoad) {
 
   var onError = function (errorMessage) {
     var errorBlock = document.createElement('div');
-    errorBlock.style = 'z-index: 100; margin: 0px auto; padding: 20px 0px; border: 1px solid #ff2c02; text-align: center; background-color: #ffaa99; color: #000; position: fixed; left: 300px; top: 100px; width: 400px; font-size: 30px; line-height: 42px; box-shadow: 6px 6px 6px #000; border-radius: 4px;';
+    errorBlock.className = 'alert__message';
     errorBlock.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', errorBlock);
   };

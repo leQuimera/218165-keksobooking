@@ -38,8 +38,7 @@
 
 var URL = 'https://intensive-javascript-server-kjgvxfepjl.now.sh/keksobooking/data';
 var onLoad = function (loadedData) {
-  window.listOfAdverts = loadedData;
-  window.pinSet();
+  window.pinSet(loadedData);
 };
 window.load(URL, onLoad);
 
