@@ -655,3 +655,22 @@ select option:hover {
 .rounded {
     border-radius: 50%;
 }
+
+.alert__message {
+  z-index: 100;
+
+  margin: 0px auto;
+  padding: 20px 0px;
+  position: fixed;
+  left: 300px;
+  top: 100px;
+  width: 400px;
+  background-color: #ffaa99;
+  color: #000;
+  text-align: center;
+  font-size: 30px;
+  line-height: 42px;
+  border: 1px solid #ff2c02;
+  box-shadow: 6px 6px 6px #000;
+  border-radius: 4px;
+}

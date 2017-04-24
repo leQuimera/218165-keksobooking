@@ -2,11 +2,11 @@
 
 // pin.js — модуль для отрисовки пина и взаимодействия с ним
 
-window.pinSet = (function () {
+window.pinSet = (function (listOfAdverts) {
+
   var pinsMap = document.querySelector('.tokyo__pin-map');
   var pinActive = document.querySelector('.pin--active');
   var dialogWindow = document.querySelector('.dialog');
-  var listOfAdverts = window.dataSet();
 
   // Создание пина для объявления
   var createPin = function (advert) {
@@ -65,8 +65,8 @@ window.pinSet = (function () {
     }
   };
 
-  return function () {
     // Нанесение пинов на карту
+  var addPinOnMap = function () {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < listOfAdverts.length; i++) {
       fragment.appendChild(createPin(listOfAdverts[i]));
@@ -76,4 +76,7 @@ window.pinSet = (function () {
     pinsMap.addEventListener('click', onShowDialog);
     pinsMap.addEventListener('keydown', onShowDialog);
   };
-})();
+
+  addPinOnMap();
+
+});
