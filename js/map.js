@@ -32,11 +32,18 @@
  * 2. isEscapePressed - Функция проверки события нажатия enter
  * 3. isClicked - Функция проверки события нажатия click
  * Каждая функция на входе получает событие, вовращает true\false соответственно
+ *
+ * load.js
  */
 
-// Объявление и все пины созданы,  нанесены  на карту
-window.pinSet();
+var URL = 'https://intensive-javascript-server-kjgvxfepjl.now.sh/keksobooking/data';
+var onLoad = function (loadedData) {
+  window.listOfAdverts = loadedData;
+  window.pinSet();
+};
+window.load(URL, onLoad);
 
+// Перетаскивание main-пина
 var pinHandle = document.querySelector('.pin__main');
 var addressField = document.querySelector('#address');
 var currentCoords = null;

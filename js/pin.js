@@ -6,7 +6,7 @@ window.pinSet = (function () {
   var pinsMap = document.querySelector('.tokyo__pin-map');
   var pinActive = document.querySelector('.pin--active');
   var dialogWindow = document.querySelector('.dialog');
-  var listOfAdverts = window.dataSet();
+  // var listOfAdverts = window.dataSet();
 
   // Создание пина для объявления
   var createPin = function (advert) {
@@ -29,8 +29,8 @@ window.pinSet = (function () {
 
   // Поиск номера нужного объявления по данным фотографии
   var searchAdvert = function (currentSrc) {
-    for (var i = 0; i < listOfAdverts.length; i++) {
-      if (listOfAdverts[i].author.avatar === currentSrc) {
+    for (var i = 0; i < window.listOfAdverts.length; i++) {
+      if (window.listOfAdverts[i].author.avatar === currentSrc) {
         break;
       }
     }
@@ -60,7 +60,7 @@ window.pinSet = (function () {
         pinActive = currentPin;
         // Создание окна диалога для выбранного пина
         var pinNumber = searchAdvert(currentSrc);
-        window.cardSet(listOfAdverts[pinNumber]);
+        window.cardSet(window.listOfAdverts[pinNumber]);
       }
     }
   };
@@ -68,8 +68,8 @@ window.pinSet = (function () {
   return function () {
     // Нанесение пинов на карту
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < listOfAdverts.length; i++) {
-      fragment.appendChild(createPin(listOfAdverts[i]));
+    for (var i = 0; i < window.listOfAdverts.length; i++) {
+      fragment.appendChild(createPin(window.listOfAdverts[i]));
     }
     pinsMap.appendChild(fragment);
     dialogWindow.style.display = 'none';
