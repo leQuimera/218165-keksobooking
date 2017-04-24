@@ -52,7 +52,7 @@ window.pinSet = (function () {
         currentSrc = checkedPin.children[0].getAttribute('src');
       }
       // Если до этого у другого элемента существовал класс pin--active, то у этого элемента класс нужно убрать
-      if (currentPin.className !== 'pin  pin__main') {
+      if (currentPin.className && currentPin.className !== 'pin  pin__main') {
         if (pinActive !== null) {
           pinActive.classList.remove('pin--active');
         }

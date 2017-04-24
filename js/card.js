@@ -12,27 +12,17 @@ window.cardSet = (function () {
   var dialogClose = document.querySelector('.dialog__close');
   var pinActive;
 
-  // Закрытие окна диалога при нажатии esc
-  var onCloseDialogEsc = function (evt) {
-    if (window.utilsSet.isEscapePressed(evt)) {
+  // Закрытие окна диалога
+  var onDialogCose = function (evt) {
+    if (window.utilsSet.isEscapePressed(evt) || window.utilsSet.isClicked(evt)) {
       pinActive = document.querySelector('.pin--active');
-      if (!pinActive === null) {
+      if (pinActive !== null) {
         pinActive.classList.remove('pin--active');
         pinActive = '';
       }
       dialogWindow.style.display = 'none';
-    }
-  };
-
-  // Закрытие окна с объявлением
-  var onCloseDialog = function (evt) {
-    if (window.utilsSet.isEnterPressed(evt) || window.utilsSet.isClicked(evt)) {
-      pinActive = document.querySelector('.pin--active');
-      if (!pinActive === null) {
-        pinActive.classList.remove('pin--active');
-      }
-      dialogWindow.style.display = 'none';
-      document.removeEventListener('keydown', onCloseDialogEsc);
+      document.removeEventListener('keydown', onDialogCose);
+      dialogClose.removeEventListener('click', onDialogCose);
     }
   };
 
@@ -67,8 +57,7 @@ window.cardSet = (function () {
 
     dialog.replaceChild(lodgeItem, dialogPanel);
     dialogWindow.style.display = 'block';
-    document.addEventListener('keydown', onCloseDialogEsc);
-    dialogClose.addEventListener('click', onCloseDialog);
-    dialogClose.addEventListener('keydown', onCloseDialog);
+    document.addEventListener('keydown', onDialogCose);
+    dialogClose.addEventListener('click', onDialogCose);
   };
 })();
