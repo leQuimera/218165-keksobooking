@@ -7,8 +7,8 @@ window.pinSet = (function (listOfAdverts) {
   var pinsMap = document.querySelector('.tokyo__pin-map');
   var pinActive = document.querySelector('.pin--active');
   var dialogWindow = document.querySelector('.dialog');
-    var PIN_WIDTH = 56;
-    var PIN_HEIGHT = 75;
+  var PIN_WIDTH = 56;
+  var PIN_HEIGHT = 75;
 
   // Создание пина для объявления
   var createPin = function (advert) {
@@ -35,7 +35,7 @@ window.pinSet = (function (listOfAdverts) {
   // Поиск номера нужного объявления по данным фотографии
   var searchAdvert = function (currentX, currentY) {
     for (var i = 0; i < listOfAdverts.length; i++) {
-      var pinX = listOfAdverts[i].location.x - PIN_WIDTH / 2 ;
+      var pinX = listOfAdverts[i].location.x - PIN_WIDTH / 2;
       var pinY = listOfAdverts[i].location.y - PIN_HEIGHT;
       if (pinX === currentX && pinY === currentY) {
         break;
