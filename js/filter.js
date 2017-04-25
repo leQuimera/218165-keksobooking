@@ -10,13 +10,12 @@ window.filters = function () {
   var offerRooms;
   var offerGuests;
   var offerFeatures;
+  var listAd;
 
-  var PRICE_HUT_MIN = 0;
-  var PRICE_HUT_MAX = 1000;
-  var PRICE_FLAT_MIN = 1000;
-  var PRICE_FLAT_MAX = 10000;
-  var PRICE_PALACE_MIN = 10000;
-  var PRICE_PALACE_MAX = 1000000;
+  var PRICE_MIN = 0;
+  var PRICE_MAX = 1000000;
+  var PRICE_MID_MIN = 10000;
+  var PRICE_MID_MAX = 50000;
 
   var mapFilters = document.querySelector('.tokyo__filters');
   var houseType = mapFilters.querySelector('#housing_type');
@@ -26,8 +25,8 @@ window.filters = function () {
   var houseFeatures = mapFilters.querySelector('#housing_features');
   var houseFeaturesList = houseFeatures.querySelectorAll('input[name=feature]');
 
-  var resetPins = function (listOfAdverts) {
-    var currentPinArray = listOfAdverts.slice();
+  var resetPins = function () {
+    var currentPinArray = listAd.slice();
 
     if (offerType) {
       if (offerType !== 'any') {
@@ -66,38 +65,39 @@ window.filters = function () {
   };
 
   return function (listOfAdverts) {
+    listAd = listOfAdverts;
     houseType.addEventListener('change', function (evt) {
       offerType = evt.currentTarget.value;
-      window.debounce(resetPins, listOfAdverts);
+      window.debounce(resetPins);
     });
 
     housePrice.addEventListener('change', function (evt) {
       var offerPrice = evt.currentTarget.value;
       switch (offerPrice) {
-        case 'bungalo':
-          offerPriceMax = PRICE_HUT_MAX;
-          offerPriceMin = PRICE_HUT_MIN;
+        case 'low':
+          offerPriceMax = PRICE_MID_MIN;
+          offerPriceMin = PRICE_MIN;
           break;
-        case 'flat':
-          offerPriceMax = PRICE_FLAT_MAX;
-          offerPriceMin = PRICE_FLAT_MIN;
+        case 'high':
+          offerPriceMax = PRICE_MAX;
+          offerPriceMin = PRICE_MID_MAX;
           break;
         default:
-          offerPriceMax = PRICE_PALACE_MAX;
-          offerPriceMin = PRICE_PALACE_MIN;
+          offerPriceMax = PRICE_MID_MAX;
+          offerPriceMin = PRICE_MID_MIN;
           break;
       }
-      window.debounce(resetPins, listOfAdverts);
+      window.debounce(resetPins);
     });
 
     houseRooms.addEventListener('change', function (evt) {
       offerRooms = evt.currentTarget.value;
-      window.debounce(resetPins, listOfAdverts);
+      window.debounce(resetPins);
     });
 
     houseGuests.addEventListener('change', function (evt) {
       offerGuests = evt.currentTarget.value;
-      window.debounce(resetPins, listOfAdverts);
+      window.debounce(resetPins);
     });
 
     houseFeatures.addEventListener('change', function (evt) {
@@ -107,7 +107,7 @@ window.filters = function () {
       .map(function (it) {
         return it.value;
       });
-      window.debounce(resetPins, listOfAdverts);
+      window.debounce(resetPins);
     });
   };
 }();

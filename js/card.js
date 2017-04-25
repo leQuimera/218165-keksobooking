@@ -26,7 +26,7 @@ window.cardSet = (function () {
     }
   };
 
-  var lodgePhotos = function (lodgePhotos, photos) {
+  var createLodgePhotos = function (lodgePhotos, photos) {
     photos.forEach(function (currentPhoto) {
       var imgNode = new Image(50, 40);
       imgNode.setAttribute('src', currentPhoto);
@@ -64,7 +64,7 @@ window.cardSet = (function () {
 
     lodgeItem.querySelector('.lodge__description').textContent = advertItem.offer.description;
 
-    lodgePhotos(lodgeGallery, advertItem.offer.photos);
+    createLodgePhotos(lodgeGallery, advertItem.offer.photos);
 
     document.querySelector('.dialog__title img').src = advertItem.author.avatar;
 
