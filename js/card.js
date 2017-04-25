@@ -4,9 +4,9 @@
 
 window.cardSet = (function () {
   var OFFER_TYPE_NAMES = {
-    'flat': 'квартира',
-    'house': 'дом',
-    'bungalo': 'бунгало'
+    'flat': 'Квартира',
+    'house': 'Дом',
+    'bungalo': 'Бунгало'
   };
   var dialogWindow = document.querySelector('.dialog');
   var dialogClose = document.querySelector('.dialog__close');
@@ -26,6 +26,15 @@ window.cardSet = (function () {
     }
   };
 
+  var lodgePhotos = function (lodgePhotos, photos) {
+    photos.forEach(function (currentPhoto) {
+      var imgNode = new Image(50, 40);
+      imgNode.setAttribute('src', currentPhoto);
+      imgNode.setAttribute('alt', 'Lodge photo');
+      lodgePhotos.appendChild(imgNode);
+    });
+  };
+
   return function (advertItem) {
     // Вывод данных о квартире на карту
     var lodgeTemplate = document.querySelector('#lodge-template').content;
@@ -36,6 +45,7 @@ window.cardSet = (function () {
     var lodgeType = lodgeItem.querySelector('.lodge__type');
     var lodgeRooms = lodgeItem.querySelector('.lodge__rooms-and-guests');
     var lodgeCheckin = lodgeItem.querySelector('.lodge__checkin-time');
+    var lodgeGallery = lodgeItem.querySelector('.lodge__photos');
     var dialog = document.querySelector('.dialog');
     var dialogPanel = document.querySelector('.dialog__panel');
 
@@ -53,6 +63,9 @@ window.cardSet = (function () {
     }
 
     lodgeItem.querySelector('.lodge__description').textContent = advertItem.offer.description;
+
+    lodgePhotos(lodgeGallery, advertItem.offer.photos);
+
     document.querySelector('.dialog__title img').src = advertItem.author.avatar;
 
     dialog.replaceChild(lodgeItem, dialogPanel);

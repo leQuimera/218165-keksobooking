@@ -1,4 +1,5 @@
 'use strict';
+// Модуль сихронизации полей]
 
 (function () {
   window.synchronizeFields = function (firstItem, secondItem, callback) {

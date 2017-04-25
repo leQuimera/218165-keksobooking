@@ -1,5 +1,7 @@
 'use strict';
 
+// Модуль загрузки данных
+
 window.load = (function (url, onLoad) {
 
   var onError = function (errorMessage) {

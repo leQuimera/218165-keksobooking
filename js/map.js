@@ -32,8 +32,19 @@
  * 2. isEscapePressed - Функция проверки события нажатия enter
  * 3. isClicked - Функция проверки события нажатия click
  * Каждая функция на входе получает событие, вовращает true\false соответственно
+ * Функции возврата случайного значения/элемента массива
  *
  * load.js
+ * Модуль загрузки данных
+ * Обрабатывает возможные ошибки - ответы сервера.
+ * На входе - url и функция, выполняющаяся в случае успеха.
+ *
+ * synchronize-fields.js
+ * Базовый модуль для синхонизации полей.
+ * Пример работы callback
+ *
+ * filter.js
+ * по данным, указываемым пользователем в фильтере под картой, выбираются подходящие значения
  */
 
 var URL = 'https://intensive-javascript-server-kjgvxfepjl.now.sh/keksobooking/data';
@@ -43,7 +54,7 @@ var onLoad = function (loadedData) {
 };
 window.load(URL, onLoad);
 
-// Перетаскивание main-пина
+// Модуль перетаскивание main-пина
 var pinHandle = document.querySelector('.pin__main');
 var addressField = document.querySelector('#address');
 var currentCoords = null;

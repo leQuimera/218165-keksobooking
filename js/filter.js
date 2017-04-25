@@ -1,5 +1,7 @@
 'use strict';
 
+// Модуль работы с фильтрами.  Показывает на карте пины, подходящие случаю
+
 window.filters = function () {
 
   var offerType;
