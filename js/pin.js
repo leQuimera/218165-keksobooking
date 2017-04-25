@@ -87,7 +87,7 @@ window.pinSet = (function () {
         deletePin(item);
       });
     }
-    for (var i = 0; i < listOfAdverts.length; i++) {
+    for (var i = 0; i < 3; i++) {
       fragment.appendChild(createPin(listOfAdverts[i]));
     }
     pinsMap.appendChild(fragment);
