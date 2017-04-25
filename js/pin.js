@@ -7,13 +7,13 @@ window.pinSet = (function (listOfAdverts) {
   var pinsMap = document.querySelector('.tokyo__pin-map');
   var pinActive = document.querySelector('.pin--active');
   var dialogWindow = document.querySelector('.dialog');
+    var PIN_WIDTH = 56;
+    var PIN_HEIGHT = 75;
 
   // Создание пина для объявления
   var createPin = function (advert) {
     var pin = document.createElement('div');
     var img = document.createElement('img');
-    var PIN_WIDTH = 56;
-    var PIN_HEIGHT = 75;
 
     pin.className = 'pin';
     pin.style.left = advert.location.x - PIN_WIDTH / 2 + 'px';
@@ -33,9 +33,11 @@ window.pinSet = (function (listOfAdverts) {
   };
 
   // Поиск номера нужного объявления по данным фотографии
-  var searchAdvert = function (currentSrc) {
+  var searchAdvert = function (currentX, currentY) {
     for (var i = 0; i < listOfAdverts.length; i++) {
-      if (listOfAdverts[i].author.avatar === currentSrc) {
+      var pinX = listOfAdverts[i].location.x - PIN_WIDTH / 2 ;
+      var pinY = listOfAdverts[i].location.y - PIN_HEIGHT;
+      if (pinX === currentX && pinY === currentY) {
         break;
       }
     }
@@ -47,14 +49,17 @@ window.pinSet = (function (listOfAdverts) {
     if (window.utilsSet.isEnterPressed(evt) || window.utilsSet.isClicked(evt)) {
       // Создание блока переменных в зависимости от того, куда ткнул пользователь мышкой
       var currentPin = '';
-      var currentSrc = '';
+      var currentX = '';
+      var currentY = '';
       var checkedPin = evt.target;
       if (evt.target.className === 'rounded') {
         currentPin = checkedPin.offsetParent;
-        currentSrc = checkedPin.getAttribute('src');
+        currentX = checkedPin.parentNode.style.left;
+        currentY = checkedPin.parentNode.style.top;
       } else if (checkedPin.className === 'pin' || checkedPin.className === 'pin pin--active') {
         currentPin = checkedPin;
-        currentSrc = checkedPin.children[0].getAttribute('src');
+        currentX = checkedPin.style.left;
+        currentY = checkedPin.style.top;
       }
       // Если до этого у другого элемента существовал класс pin--active, то у этого элемента класс нужно убрать
       if (currentPin.className && currentPin.className !== 'pin  pin__main') {
@@ -64,7 +69,9 @@ window.pinSet = (function (listOfAdverts) {
         currentPin.classList.add('pin--active');
         pinActive = currentPin;
         // Создание окна диалога для выбранного пина
-        var pinNumber = searchAdvert(currentSrc);
+        currentX = parseInt(currentX.slice(0, -2), 10);
+        currentY = parseInt(currentY.slice(0, -2), 10);
+        var pinNumber = searchAdvert(currentX, currentY);
         window.cardSet(listOfAdverts[pinNumber]);
       }
     }

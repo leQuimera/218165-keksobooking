@@ -66,7 +66,7 @@ window.filters = function () {
   return function (listOfAdverts) {
     houseType.addEventListener('change', function (evt) {
       offerType = evt.currentTarget.value;
-      resetPins(listOfAdverts);
+      window.debounce(resetPins, listOfAdverts);
     });
 
     housePrice.addEventListener('change', function (evt) {
@@ -85,17 +85,17 @@ window.filters = function () {
           offerPriceMin = PRICE_PALACE_MIN;
           break;
       }
-      resetPins(listOfAdverts);
+      window.debounce(resetPins, listOfAdverts);
     });
 
     houseRooms.addEventListener('change', function (evt) {
       offerRooms = evt.currentTarget.value;
-      resetPins(listOfAdverts);
+      window.debounce(resetPins, listOfAdverts);
     });
 
     houseGuests.addEventListener('change', function (evt) {
       offerGuests = evt.currentTarget.value;
-      resetPins(listOfAdverts);
+      window.debounce(resetPins, listOfAdverts);
     });
 
     houseFeatures.addEventListener('change', function (evt) {
@@ -105,7 +105,7 @@ window.filters = function () {
       .map(function (it) {
         return it.value;
       });
-      resetPins(listOfAdverts);
+      window.debounce(resetPins, listOfAdverts);
     });
   };
 }();
