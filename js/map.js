@@ -39,6 +39,7 @@
 var URL = 'https://intensive-javascript-server-kjgvxfepjl.now.sh/keksobooking/data';
 var onLoad = function (loadedData) {
   window.pinSet(loadedData);
+  window.filters(loadedData);
 };
 window.load(URL, onLoad);
 

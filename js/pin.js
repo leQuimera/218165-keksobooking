@@ -27,6 +27,11 @@ window.pinSet = (function (listOfAdverts) {
     return pin;
   };
 
+  // Удалить пин с карты
+  var deletePin = function (pin) {
+    pinsMap.removeChild(pin);
+  };
+
   // Поиск номера нужного объявления по данным фотографии
   var searchAdvert = function (currentSrc) {
     for (var i = 0; i < listOfAdverts.length; i++) {
@@ -68,6 +73,12 @@ window.pinSet = (function (listOfAdverts) {
     // Нанесение пинов на карту
   var addPinOnMap = function () {
     var fragment = document.createDocumentFragment();
+    var allPins = pinsMap.querySelectorAll('.pin:not(.pin__main)');
+    if (allPins.length !== 0) {
+      allPins.forEach(function (item) {
+        deletePin(item);
+      });
+    }
     for (var i = 0; i < listOfAdverts.length; i++) {
       fragment.appendChild(createPin(listOfAdverts[i]));
     }
