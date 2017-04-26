@@ -28,6 +28,12 @@ window.utilsSet = (function () {
     // Возврат уникального эллемента из массива
     getRandomUniqueItem: function (array) {
       return array.splice(window.utilsSet.getRandomInt(0, array.length - 1), 1);
+    },
+    isActiveSet: function (itClass) {
+      if (itClass !== null) {
+        itClass.classList.remove('pin--active');
+        itClass = '';
+      }
     }
   };
 })();

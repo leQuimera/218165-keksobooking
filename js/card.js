@@ -16,10 +16,7 @@ window.cardSet = (function () {
   var onDialogCose = function (evt) {
     if (window.utilsSet.isEscapePressed(evt) || window.utilsSet.isClicked(evt)) {
       pinActive = document.querySelector('.pin--active');
-      if (pinActive !== null) {
-        pinActive.classList.remove('pin--active');
-        pinActive = '';
-      }
+      window.utilsSet.isActiveSet(pinActive);
       dialogWindow.style.display = 'none';
       document.removeEventListener('keydown', onDialogCose);
       dialogClose.removeEventListener('click', onDialogCose);

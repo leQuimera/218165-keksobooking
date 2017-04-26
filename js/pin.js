@@ -3,7 +3,7 @@
 // pin.js — модуль для отрисовки пина и взаимодействия с ним
 
 window.pinSet = (function () {
-  var listOfAdverts;
+  var listOfAdverts = [];
   var pinsMap = document.querySelector('.tokyo__pin-map');
   var pinActive = document.querySelector('.pin--active');
   var dialogWindow = document.querySelector('.dialog');
@@ -62,10 +62,8 @@ window.pinSet = (function () {
         currentY = checkedPin.style.top;
       }
       // Если до этого у другого элемента существовал класс pin--active, то у этого элемента класс нужно убрать
-      if (currentPin.className && currentPin.className !== 'pin  pin__main') {
-        if (pinActive !== null) {
-          pinActive.classList.remove('pin--active');
-        }
+      if (currentPin && !currentPin.classList.contains('pin__main')) {
+        window.utilsSet.isActiveSet(pinActive);
         currentPin.classList.add('pin--active');
         pinActive = currentPin;
         // Создание окна диалога для выбранного пина
@@ -87,7 +85,7 @@ window.pinSet = (function () {
         deletePin(item);
       });
     }
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < listOfAdverts.length; i++) {
       fragment.appendChild(createPin(listOfAdverts[i]));
     }
     pinsMap.appendChild(fragment);

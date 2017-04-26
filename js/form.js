@@ -97,13 +97,8 @@ window.formSet = (function () {
   };
 
   var checkFieldValid = function (checkedField) {
-    if (checkedField.validity.valid) {
-      checkedField.style.border = '1px solid #d9d9d3';
-      return true;
-    } else {
-      checkedField.style.border = '2px solid red';
-      return false;
-    }
+    checkedField.style.border = (checkedField.validity.valid) ? '1px solid #d9d9d3' : '2px solid red';
+    return checkedField.validity.valid;
   };
 
   var onSubmitButtonClick = function (evt) {
