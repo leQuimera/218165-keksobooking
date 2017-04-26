@@ -1,9 +1,14 @@
 'use strict';
 
 // Модуль работы с фильтрами.  Показывает на карте пины, подходящие случаю
+
 window.filters = function () {
+  var offerType = null;
+  var offerPrice = null;
+  var offerRooms = null;
+  var offerGuests = null;
+  var offerFeatures = null;
   var listAd = [];
-  var filteredArray = [];
   var PRICE_MID_MIN = 10000;
   var PRICE_MID_MAX = 50000;
   var mapFilters = document.querySelector('.tokyo__filters');
@@ -13,17 +18,14 @@ window.filters = function () {
   var houseGuests = mapFilters.querySelector('#housing_guests-number');
   var houseFeatures = mapFilters.querySelector('#housing_features');
   var houseFeaturesList = houseFeatures.querySelectorAll('input[name=feature]');
-  // Получаем данные из фильтра
-  var getValueFromFilter = function (elem) {
-    return elem.options[elem.selectedIndex].value;
-  };
-  // Получаем уже отфильтрованные данные при помощи нужной функции
+
+  // Step1 Получаем уже отфильтрованные данные при помощи нужной функции
   var getFilteredData = function (curArray, field, fieldValue, callback) {
     return curArray.filter(function (it) {
       return callback(it, field, fieldValue);
     });
   };
-  // Фильтр, если значения полей идентичны
+  // Step3 Если значение не любое, то сравниваем результат
   var isEqual = function (it, field, fieldValue) {
     if (field === 'guests' || field === 'rooms') {
       return it.offer[field] === parseInt(fieldValue, 10);
@@ -31,11 +33,7 @@ window.filters = function () {
       return it.offer[field] === fieldValue;
     }
   };
-  // Если чекбокс выбран
-  var isChecked = function (it, field, fieldValue) {
-    return it.offer[field].indexOf(fieldValue) !== -1;
-  };
-  // Перебор по диапазону цен
+  // Step2  Перебор по диапазону цен
   var isSuitablePrice = function (it, field, fieldValue) {
     switch (fieldValue) {
       case 'middle':
@@ -48,7 +46,7 @@ window.filters = function () {
         return false;
     }
   };
-  // Пробег по чекбоксам
+  // Step2 отсеивает те, где есть значение "любое"
   var isSuitableValue = function (it, field, fieldValue) {
     if (fieldValue === 'any') {
       return true;
@@ -58,36 +56,57 @@ window.filters = function () {
   };
   var resetPins = function () {
     var currentPinArray = listAd.slice();
-    filteredArray = getFilteredData(currentPinArray, 'type', getValueFromFilter(houseType), isSuitableValue);
-    filteredArray = getFilteredData(filteredArray, 'price', getValueFromFilter(housePrice), isSuitablePrice);
-    filteredArray = getFilteredData(filteredArray, 'rooms', getValueFromFilter(houseRooms), isSuitableValue);
-    filteredArray = getFilteredData(filteredArray, 'guests', getValueFromFilter(houseGuests), isSuitableValue);
-    filteredArray = [].reduce.call(houseFeaturesList, function (previousValue, currentItem) {
-      if (currentItem.checked) {
-        var value = currentItem.getAttribute('value');
-        return getFilteredData(previousValue, 'features', value, isChecked);
-      } else {
-        return previousValue;
-      }
-    }, filteredArray);
-    window.pinSet(filteredArray, false);
+    if (offerType !== null) {
+      currentPinArray = getFilteredData(currentPinArray, 'type', offerType, isSuitableValue);
+    }
+    if (offerPrice !== null) {
+      currentPinArray = getFilteredData(currentPinArray, 'price', offerPrice, isSuitablePrice);
+    }
+    if (offerRooms !== null) {
+      currentPinArray = getFilteredData(currentPinArray, 'rooms', offerRooms, isSuitableValue);
+    }
+    if (offerGuests) {
+      currentPinArray = getFilteredData(currentPinArray, 'guests', offerGuests, isSuitableValue);
+    }
+    if (offerFeatures && offerFeatures.length > 0) {
+      offerFeatures.forEach(function (item, index, array) {
+        currentPinArray = currentPinArray.filter(function (it) {
+          return it.offer.features.indexOf(item) !== -1;
+        });
+      });
+    }
+    window.pinSet(currentPinArray);
   };
 
   return function (listOfAdverts) {
     listAd = listOfAdverts;
     houseType.addEventListener('change', function (evt) {
+      offerType = evt.currentTarget.value;
       window.debounce(resetPins);
     });
+
     housePrice.addEventListener('change', function (evt) {
+      offerPrice = evt.currentTarget.value;
       window.debounce(resetPins);
     });
+
     houseRooms.addEventListener('change', function (evt) {
+      offerRooms = evt.currentTarget.value;
       window.debounce(resetPins);
     });
+
     houseGuests.addEventListener('change', function (evt) {
+      offerGuests = evt.currentTarget.value;
       window.debounce(resetPins);
     });
+
     houseFeatures.addEventListener('change', function (evt) {
+      offerFeatures = [].filter.call(houseFeaturesList, function (it) {
+        return it.checked === true;
+      })
+      .map(function (it) {
+        return it.value;
+      });
       window.debounce(resetPins);
     });
   };

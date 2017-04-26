@@ -63,11 +63,13 @@ window.pinSet = (function () {
     var fragment = document.createDocumentFragment();
     var allPins = pinsMap.querySelectorAll('.pin:not(.pin__main)');
     if (allPins.length !== 0) {
-      pinsMap.innerHTML = '';
+      for (var i = 0; i < allPins.length; i++) {
+        pinsMap.removeChild(allPins[i]);
+      }
     }
     var stepCount = (step) ? 3 : listOfAdverts.length;
-    for (var i = 0; i < stepCount; i++) {
-      fragment.appendChild(createPin(listOfAdverts[i]));
+    for (var j = 0; j < stepCount; j++) {
+      fragment.appendChild(createPin(listOfAdverts[j]));
     }
     pinsMap.appendChild(fragment);
     dialogWindow.style.display = 'none';
