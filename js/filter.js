@@ -1,15 +1,11 @@
 'use strict';
 
 // Модуль работы с фильтрами.  Показывает на карте пины, подходящие случаю
-
 window.filters = function () {
-
   var listAd = [];
   var filteredArray = [];
-
   var PRICE_MID_MIN = 10000;
   var PRICE_MID_MAX = 50000;
-
   var mapFilters = document.querySelector('.tokyo__filters');
   var houseType = mapFilters.querySelector('#housing_type');
   var housePrice = mapFilters.querySelector('#housing_price');
@@ -17,34 +13,28 @@ window.filters = function () {
   var houseGuests = mapFilters.querySelector('#housing_guests-number');
   var houseFeatures = mapFilters.querySelector('#housing_features');
   var houseFeaturesList = houseFeatures.querySelectorAll('input[name=feature]');
-
-
   // Получаем данные из фильтра
   var getValueFromFilter = function (elem) {
     return elem.options[elem.selectedIndex].value;
   };
-
   // Получаем уже отфильтрованные данные при помощи нужной функции
   var getFilteredData = function (curArray, field, fieldValue, callback) {
     return curArray.filter(function (it) {
       return callback(it, field, fieldValue);
     });
   };
-
   // Фильтр, если значения полей идентичны
   var isEqual = function (it, field, fieldValue) {
     if (field === 'guests' || field === 'rooms') {
-      return it.offer[field] === +fieldValue;
+      return it.offer[field] === parseInt(fieldValue, 10);
     } else {
       return it.offer[field] === fieldValue;
     }
   };
-
   // Если чекбокс выбран
   var isChecked = function (it, field, fieldValue) {
     return it.offer[field].indexOf(fieldValue) !== -1;
   };
-
   // Перебор по диапазону цен
   var isSuitablePrice = function (it, field, fieldValue) {
     switch (fieldValue) {
@@ -58,7 +48,6 @@ window.filters = function () {
         return false;
     }
   };
-
   // Пробег по чекбоксам
   var isSuitableValue = function (it, field, fieldValue) {
     if (fieldValue === 'any') {
@@ -67,7 +56,6 @@ window.filters = function () {
       return isEqual(it, field, fieldValue);
     }
   };
-
   var resetPins = function () {
     var currentPinArray = listAd.slice();
     filteredArray = getFilteredData(currentPinArray, 'type', getValueFromFilter(houseType), isSuitableValue);
@@ -82,8 +70,7 @@ window.filters = function () {
         return previousValue;
       }
     }, filteredArray);
-
-    window.pinSet(filteredArray);
+    window.pinSet(filteredArray, false);
   };
 
   return function (listOfAdverts) {
@@ -91,19 +78,15 @@ window.filters = function () {
     houseType.addEventListener('change', function (evt) {
       window.debounce(resetPins);
     });
-
     housePrice.addEventListener('change', function (evt) {
       window.debounce(resetPins);
     });
-
     houseRooms.addEventListener('change', function (evt) {
       window.debounce(resetPins);
     });
-
     houseGuests.addEventListener('change', function (evt) {
       window.debounce(resetPins);
     });
-
     houseFeatures.addEventListener('change', function (evt) {
       window.debounce(resetPins);
     });

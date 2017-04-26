@@ -13,7 +13,7 @@ window.formSet = (function () {
   var title = formInner.querySelector('#title');
   var submitButton = formInner.querySelector('.form__submit');
   var address = formInner.querySelector('#address');
-
+  var dialogWindow = document.querySelector('.dialog');
   var TITLE_MAXLENGTH = 100;
   var TITLE_MINLENGTH = 30;
   var PRICE_MAX = 1000000;
@@ -27,7 +27,6 @@ window.formSet = (function () {
   var ADVERT_TYPE = 'flat';
   var ROOM_CAPACITY = 1;
   var START_TIME = 12;
-
   advertPrice.setAttribute('required', 'required');
   advertPrice.setAttribute('min', PRICE_MIN);
   advertPrice.setAttribute('max', PRICE_MAX);
@@ -41,7 +40,6 @@ window.formSet = (function () {
     var description = formInner.querySelector('#description');
     var formFeatures = document.getElementById('features');
     var tagsInput = formFeatures.getElementsByTagName('input');
-
     title.value = '';
     advertType.value = ADVERT_TYPE;
     advertPrice.value = '';
@@ -57,13 +55,9 @@ window.formSet = (function () {
       tagsInput[i].checked = false;
     }
   };
-
-  // При изменении «времени заезда» и «время выезда» автоматически выставляется точно таким же
   var timeInToTimeoutChange = function (fieldFirst, valueSecond) {
     fieldFirst.value = valueSecond;
   };
-
-  //  Изменение стоимости предложения взависимости от типа
   var advertTypeChange = function (fieldFirst, valueSecond) {
     switch (valueSecond) {
       case 'hut':
@@ -80,7 +74,6 @@ window.formSet = (function () {
         break;
     }
   };
-
   var priceChange = function (fieldFirst, valueSecond) {
     if (valueSecond <= PRICE_HUT_MAX) {
       fieldFirst.value = 'hut';
@@ -90,17 +83,13 @@ window.formSet = (function () {
       fieldFirst.value = 'palace';
     }
   };
-
-  // Установление взаимосвязей между количеством комнат и вместимостью
   var roomAndCapacityChange = function (fieldFirst, valueSecond) {
     fieldFirst.value = (valueSecond === '1') ? '1' : '2';
   };
-
   var checkFieldValid = function (checkedField) {
     checkedField.style.border = (checkedField.validity.valid) ? '1px solid #d9d9d3' : '2px solid red';
     return checkedField.validity.valid;
   };
-
   var onSubmitButtonClick = function (evt) {
     var validTitle = checkFieldValid(title);
     var validPrice = checkFieldValid(advertPrice);
@@ -110,6 +99,7 @@ window.formSet = (function () {
     }
   };
 
+  dialogWindow.style.display = 'none';
   window.synchronizeFields(timeCheckOut, timeCheckIn, timeInToTimeoutChange);
   window.synchronizeFields(timeCheckIn, timeCheckOut, timeInToTimeoutChange);
   window.synchronizeFields(roomCapacity, roomNumber, roomAndCapacityChange);
@@ -117,5 +107,4 @@ window.formSet = (function () {
   window.synchronizeFields(advertPrice, advertType, priceChange);
   window.synchronizeFields(advertType, advertPrice, advertTypeChange);
   submitButton.addEventListener('click', onSubmitButtonClick);
-
 })();

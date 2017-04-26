@@ -1,10 +1,8 @@
 'use strict';
 
-// Модуль, убирает эффет "мерцания" при многократном обращении к пину
-
+// Модуль, убирает эффет "мерцания" при многократном обращении к форме
 (function () {
-  var DEBOUNCE_TIME = 500; // ms
-
+  var DEBOUNCE_TIME = 500;
   var lastTimeout = null;
   window.debounce = function (callback) {
     if (lastTimeout) {

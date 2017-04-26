@@ -30,9 +30,9 @@ window.utilsSet = (function () {
       return array.splice(window.utilsSet.getRandomInt(0, array.length - 1), 1);
     },
     isActiveSet: function (itClass) {
-      if (itClass !== null) {
-        itClass.classList.remove('pin--active');
-        itClass = '';
+      var pinActive = document.querySelector(itClass);
+      if (pinActive !== null) {
+        pinActive.classList.remove('pin--active');
       }
     }
   };

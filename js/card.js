@@ -1,7 +1,6 @@
 'use strict';
 
 // card.js — модуль для отрисовки элемента на карточке
-
 window.cardSet = (function () {
   var OFFER_TYPE_NAMES = {
     'flat': 'Квартира',
@@ -10,19 +9,14 @@ window.cardSet = (function () {
   };
   var dialogWindow = document.querySelector('.dialog');
   var dialogClose = document.querySelector('.dialog__close');
-  var pinActive;
-
-  // Закрытие окна диалога
-  var onDialogCose = function (evt) {
+  var onDialogClose = function (evt) {
     if (window.utilsSet.isEscapePressed(evt) || window.utilsSet.isClicked(evt)) {
-      pinActive = document.querySelector('.pin--active');
-      window.utilsSet.isActiveSet(pinActive);
+      window.utilsSet.isActiveSet('.pin--active');
       dialogWindow.style.display = 'none';
-      document.removeEventListener('keydown', onDialogCose);
-      dialogClose.removeEventListener('click', onDialogCose);
+      document.removeEventListener('keydown', onDialogClose);
+      dialogClose.removeEventListener('click', onDialogClose);
     }
   };
-
   var createLodgePhotos = function (lodgePhotos, photos) {
     photos.forEach(function (currentPhoto) {
       var imgNode = new Image(50, 40);
@@ -33,7 +27,6 @@ window.cardSet = (function () {
   };
 
   return function (advertItem) {
-    // Вывод данных о квартире на карту
     var lodgeTemplate = document.querySelector('#lodge-template').content;
     var lodgeItem = lodgeTemplate.cloneNode(true);
     var lodgeTitle = lodgeItem.querySelector('.lodge__title');
@@ -45,7 +38,8 @@ window.cardSet = (function () {
     var lodgeGallery = lodgeItem.querySelector('.lodge__photos');
     var dialog = document.querySelector('.dialog');
     var dialogPanel = document.querySelector('.dialog__panel');
-
+    var lodgDesc = lodgeItem.querySelector('.lodge__description');
+    var dialogTitleImg = document.querySelector('.dialog__title img');
     lodgeTitle.textContent = advertItem.offer.title;
     lodgeAddress.textContent = advertItem.offer.address;
     lodgePrice.innerHTML = advertItem.offer.price + ' ' + '&#8381;/ночь';
@@ -55,19 +49,16 @@ window.cardSet = (function () {
 
     for (var i = 0; i < advertItem.offer.features.length; i++) {
       var span = document.createElement('span');
+      var lodgeFeatures = lodgeItem.querySelector('.lodge__features');
       span.className = 'feature__image feature__image--' + advertItem.offer.features[i];
-      lodgeItem.querySelector('.lodge__features').appendChild(span);
+      lodgeFeatures.appendChild(span);
     }
-
-    lodgeItem.querySelector('.lodge__description').textContent = advertItem.offer.description;
-
+    lodgDesc.textContent = advertItem.offer.description;
     createLodgePhotos(lodgeGallery, advertItem.offer.photos);
-
-    document.querySelector('.dialog__title img').src = advertItem.author.avatar;
-
+    dialogTitleImg.src = advertItem.author.avatar;
     dialog.replaceChild(lodgeItem, dialogPanel);
     dialogWindow.style.display = 'block';
-    document.addEventListener('keydown', onDialogCose);
-    dialogClose.addEventListener('click', onDialogCose);
+    document.addEventListener('keydown', onDialogClose);
+    dialogClose.addEventListener('click', onDialogClose);
   };
 })();
