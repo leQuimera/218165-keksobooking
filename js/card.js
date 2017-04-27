@@ -13,7 +13,7 @@ window.cardSet = (function () {
 
   var onDialogClose = function (evt) {
     if (window.utilsSet.isEscapePressed(evt) || window.utilsSet.isClicked(evt)) {
-      window.utilsSet.isActiveSet('.pin--active');
+      window.utilsSet.removeActive('.pin--active');
       dialogWindow.style.display = 'none';
       document.removeEventListener('keydown', onDialogClose);
       dialogClose.removeEventListener('click', onDialogClose);
@@ -42,6 +42,7 @@ window.cardSet = (function () {
     var dialogPanel = document.querySelector('.dialog__panel');
     var lodgDesc = lodgeItem.querySelector('.lodge__description');
     var dialogTitleImg = document.querySelector('.dialog__title img');
+    var lodgeFeatures = lodgeItem.querySelector('.lodge__features');
     lodgeTitle.textContent = advertItem.offer.title;
     lodgeAddress.textContent = advertItem.offer.address;
     lodgePrice.innerHTML = advertItem.offer.price + ' ' + '&#8381;/ночь';
@@ -51,7 +52,6 @@ window.cardSet = (function () {
 
     for (var i = 0; i < advertItem.offer.features.length; i++) {
       var span = document.createElement('span');
-      var lodgeFeatures = lodgeItem.querySelector('.lodge__features');
       span.className = 'feature__image feature__image--' + advertItem.offer.features[i];
       lodgeFeatures.appendChild(span);
     }

@@ -1,23 +1,14 @@
 'use strict';
 
 // Модуль перетаскивание main-пина
-window.pinMoveSet = (function () {
+(function () {
 
   var pinHandle = document.querySelector('.pin__main');
   var addressField = document.querySelector('#address');
   var currentCoords = null;
 
   pinHandle.setAttribute('draggable', true);
-  var onPinMouseDown = function (evt) {
-    evt.preventDefault();
-    var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
-    currentCoords = startCoords;
-    document.addEventListener('mousemove', onPinMouseMove);
-    document.addEventListener('mouseup', onPinMouseUp);
-  };
+
   var onPinMouseMove = function (evt) {
     evt.preventDefault();
     var PIN_PARAM = {
@@ -47,8 +38,16 @@ window.pinMoveSet = (function () {
     document.removeEventListener('mousemove', onPinMouseMove);
     document.removeEventListener('mouseup', onPinMouseUp);
   };
-
-  return function () {
-    pinHandle.addEventListener('mousedown', onPinMouseDown);
+  var onPinMouseDown = function (evt) {
+    evt.preventDefault();
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+    currentCoords = startCoords;
+    document.addEventListener('mousemove', onPinMouseMove);
+    document.addEventListener('mouseup', onPinMouseUp);
   };
+
+  pinHandle.addEventListener('mousedown', onPinMouseDown);
 })();

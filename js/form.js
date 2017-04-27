@@ -1,7 +1,7 @@
 'use strict';
 
 // form.js — модуль, который работает с формой объявления
-window.formSet = (function () {
+(function () {
   var formInner = document.querySelector('.notice__form');
   var timeCheckIn = formInner.querySelector('#time');
   var timeCheckOut = formInner.querySelector('#timeout');

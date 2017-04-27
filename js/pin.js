@@ -24,7 +24,7 @@ window.pinSet = (function () {
     return pin;
   };
 
-  return function (currentArray, step) {
+  return function (currentArray) {
     listOfAdverts = currentArray;
     var fragment = document.createDocumentFragment();
     var allPins = pinsMap.querySelectorAll('.pin:not(.pin__main)');
@@ -33,8 +33,7 @@ window.pinSet = (function () {
         pinsMap.removeChild(allPins[i]);
       }
     }
-    var stepCount = (step) ? 3 : listOfAdverts.length;
-    for (var j = 0; j < stepCount; j++) {
+    for (var j = 0; j < currentArray.length; j++) {
       fragment.appendChild(createPin(listOfAdverts[j]));
     }
 

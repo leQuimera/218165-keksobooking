@@ -32,7 +32,7 @@ window.showCard = (function () {
         currentY = checkedPin.style.top;
       }
       if (currentPin && !currentPin.classList.contains('pin__main')) {
-        window.utilsSet.isActiveSet('.pin--active');
+        window.utilsSet.removeActive('.pin--active');
         currentPin.classList.add('pin--active');
         pinHeight = pinHeight || parseInt(getComputedStyle(currentPin).height.slice(0, -2), 10);
         pinWidth = pinWidth || parseInt(getComputedStyle(currentPin).width.slice(0, -2), 10);

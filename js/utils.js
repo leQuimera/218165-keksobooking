@@ -3,19 +3,20 @@
 // Вспомогательные функции
 window.utilsSet = (function () {
 
-  var enterCode = 13;
-  var escCode = 27;
-  var clicked = 'click';
+  var ENTER_CODE = 13;
+  var ESC_CODE = 27;
+  var CLICKED = 'click';
+  var pinActive = null;
 
   return {
     isEnterPressed: function (evt) {
-      return evt && evt.keyCode === enterCode;
+      return evt && evt.keyCode === ENTER_CODE;
     },
     isEscapePressed: function (evt) {
-      return evt && evt.keyCode === escCode;
+      return evt && evt.keyCode === ESC_CODE;
     },
     isClicked: function (evt) {
-      return evt.type === clicked;
+      return evt.type === CLICKED;
     },
     getRandomInt: function (min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -26,10 +27,10 @@ window.utilsSet = (function () {
     getRandomUniqueItem: function (array) {
       return array.splice(window.utilsSet.getRandomInt(0, array.length - 1), 1);
     },
-    isActiveSet: function (itClass) {
-      var pinActive = document.querySelector(itClass);
+    removeActive: function (itClass) {
+      pinActive = document.querySelector(itClass);
       if (pinActive !== null) {
-        pinActive.classList.remove('pin--active');
+        pinActive.classList.remove(itClass.split('.')[1]);
       }
     }
   };
