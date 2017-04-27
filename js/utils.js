@@ -1,33 +1,44 @@
 'use strict';
 
 // Вспомогательные функции
-
 window.utilsSet = (function () {
-  var enterCode = 13;
-  var escCode = 27;
-  var clicked = 'click';
+
+  var ENTER_CODE = 13;
+  var ESC_CODE = 27;
+  var CLICKED = 'click';
+  var pinActive = null;
+  var dialogWindow = document.querySelector('.dialog');
 
   return {
     isEnterPressed: function (evt) {
-      return evt && evt.keyCode === enterCode;
+      return evt && evt.keyCode === ENTER_CODE;
     },
     isEscapePressed: function (evt) {
-      return evt && evt.keyCode === escCode;
+      return evt && evt.keyCode === ESC_CODE;
     },
     isClicked: function (evt) {
-      return evt.type === clicked;
+      return evt.type === CLICKED;
     },
-    // Возврат случайного значения
     getRandomInt: function (min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
-    // Возврат случайного эллемента из массива
     getRandomArrayItem: function (array) {
       return array[window.utilsSet.getRandomInt(0, array.length - 1)];
     },
-    // Возврат уникального эллемента из массива
     getRandomUniqueItem: function (array) {
       return array.splice(window.utilsSet.getRandomInt(0, array.length - 1), 1);
+    },
+    removeActive: function (itClass) {
+      pinActive = document.querySelector('.' + itClass);
+      if (pinActive !== null) {
+        pinActive.classList.remove(itClass);
+      }
+    },
+    hideCard: function () {
+      dialogWindow.style.display = 'none';
+    },
+    displayCard: function () {
+      dialogWindow.style.display = 'block';
     }
   };
 })();
