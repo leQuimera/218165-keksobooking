@@ -2,10 +2,11 @@
 
 // Модуль перетаскивание main-пина
 window.pinMoveSet = (function () {
-  // Модуль перетаскивание main-пина
+
   var pinHandle = document.querySelector('.pin__main');
   var addressField = document.querySelector('#address');
   var currentCoords = null;
+
   pinHandle.setAttribute('draggable', true);
   var onPinMouseDown = function (evt) {
     evt.preventDefault();
@@ -46,6 +47,7 @@ window.pinMoveSet = (function () {
     document.removeEventListener('mousemove', onPinMouseMove);
     document.removeEventListener('mouseup', onPinMouseUp);
   };
+
   return function () {
     pinHandle.addEventListener('mousedown', onPinMouseDown);
   };

@@ -1,8 +1,9 @@
 'use strict';
 
 // Модуль загрузки данных
-
 window.load = (function (url, onLoad) {
+
+  var xhr = new XMLHttpRequest();
 
   var onError = function (errorMessage) {
     var errorBlock = document.createElement('div');
@@ -10,10 +11,7 @@ window.load = (function (url, onLoad) {
     errorBlock.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', errorBlock);
   };
-
-  var xhr = new XMLHttpRequest();
   xhr.responseType = 'json';
-
   xhr.addEventListener('load', function () {
     switch (xhr.status) {
       case 200:
@@ -39,9 +37,7 @@ window.load = (function (url, onLoad) {
     onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
   });
 
-  xhr.timeout = 10000; // 10s
-
+  xhr.timeout = 10000;
   xhr.open('GET', url);
   xhr.send();
-
 });

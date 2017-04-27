@@ -2,6 +2,7 @@
 
 // pin.js — модуль для отрисовки пина и взаимодействия с ним
 window.pinSet = (function () {
+
   var listOfAdverts = [];
   var pinsMap = document.querySelector('.tokyo__pin-map');
   var dialogWindow = document.querySelector('.dialog');
@@ -22,41 +23,6 @@ window.pinSet = (function () {
     pin.setAttribute('tabindex', 0);
     return pin;
   };
-  var searchAdvert = function (currentX, currentY) {
-    for (var i = 0; i < listOfAdverts.length; i++) {
-      var pinX = listOfAdverts[i].location.x - PIN_WIDTH / 2;
-      var pinY = listOfAdverts[i].location.y - PIN_HEIGHT;
-      if (pinX === currentX && pinY === currentY) {
-        break;
-      }
-    }
-    return i;
-  };
-  var onShowDialog = function (evt) {
-    if (window.utilsSet.isEnterPressed(evt) || window.utilsSet.isClicked(evt)) {
-      var currentPin = '';
-      var currentX = '';
-      var currentY = '';
-      var checkedPin = evt.target;
-      if (evt.target.classList.contains('rounded')) {
-        currentPin = checkedPin.offsetParent;
-        currentX = checkedPin.parentNode.style.left;
-        currentY = checkedPin.parentNode.style.top;
-      } else if (checkedPin.classList.contains('pin')) {
-        currentPin = checkedPin;
-        currentX = checkedPin.style.left;
-        currentY = checkedPin.style.top;
-      }
-      if (currentPin && !currentPin.classList.contains('pin__main')) {
-        window.utilsSet.isActiveSet('.pin--active');
-        currentPin.classList.add('pin--active');
-        currentX = parseInt(currentX.slice(0, -2), 10);
-        currentY = parseInt(currentY.slice(0, -2), 10);
-        var pinNumber = searchAdvert(currentX, currentY);
-        window.cardSet(listOfAdverts[pinNumber]);
-      }
-    }
-  };
 
   return function (currentArray, step) {
     listOfAdverts = currentArray;
@@ -71,9 +37,14 @@ window.pinSet = (function () {
     for (var j = 0; j < stepCount; j++) {
       fragment.appendChild(createPin(listOfAdverts[j]));
     }
+
+    var onPinClickKey = function (evt) {
+      window.showCard(evt, listOfAdverts);
+    };
+
     pinsMap.appendChild(fragment);
     dialogWindow.style.display = 'none';
-    pinsMap.addEventListener('click', onShowDialog);
-    pinsMap.addEventListener('keydown', onShowDialog);
+    pinsMap.addEventListener('click', onPinClickKey);
+    pinsMap.addEventListener('keydown', onPinClickKey);
   };
 })();

@@ -2,6 +2,7 @@
 
 // card.js — модуль для отрисовки элемента на карточке
 window.cardSet = (function () {
+
   var OFFER_TYPE_NAMES = {
     'flat': 'Квартира',
     'house': 'Дом',
@@ -9,6 +10,7 @@ window.cardSet = (function () {
   };
   var dialogWindow = document.querySelector('.dialog');
   var dialogClose = document.querySelector('.dialog__close');
+
   var onDialogClose = function (evt) {
     if (window.utilsSet.isEscapePressed(evt) || window.utilsSet.isClicked(evt)) {
       window.utilsSet.isActiveSet('.pin--active');

@@ -1,7 +1,6 @@
 'use strict';
 
-// Модуль работы с фильтрами.  Показывает на карте пины, подходящие случаю
-
+// Модуль работы с фильтрами.
 window.filters = function () {
   var offerType = null;
   var offerPrice = null;
@@ -19,13 +18,11 @@ window.filters = function () {
   var houseFeatures = mapFilters.querySelector('#housing_features');
   var houseFeaturesList = houseFeatures.querySelectorAll('input[name=feature]');
 
-  // Step1 Получаем уже отфильтрованные данные при помощи нужной функции
   var getFilteredData = function (curArray, field, fieldValue, callback) {
     return curArray.filter(function (it) {
       return callback(it, field, fieldValue);
     });
   };
-  // Step3 Если значение не любое, то сравниваем результат
   var isEqual = function (it, field, fieldValue) {
     if (field === 'guests' || field === 'rooms') {
       return it.offer[field] === parseInt(fieldValue, 10);
@@ -33,7 +30,6 @@ window.filters = function () {
       return it.offer[field] === fieldValue;
     }
   };
-  // Step2  Перебор по диапазону цен
   var isSuitablePrice = function (it, field, fieldValue) {
     switch (fieldValue) {
       case 'middle':
@@ -46,7 +42,6 @@ window.filters = function () {
         return false;
     }
   };
-  // Step2 отсеивает те, где есть значение "любое"
   var isSuitableValue = function (it, field, fieldValue) {
     if (fieldValue === 'any') {
       return true;
@@ -84,22 +79,18 @@ window.filters = function () {
       offerType = evt.currentTarget.value;
       window.debounce(resetPins);
     });
-
     housePrice.addEventListener('change', function (evt) {
       offerPrice = evt.currentTarget.value;
       window.debounce(resetPins);
     });
-
     houseRooms.addEventListener('change', function (evt) {
       offerRooms = evt.currentTarget.value;
       window.debounce(resetPins);
     });
-
     houseGuests.addEventListener('change', function (evt) {
       offerGuests = evt.currentTarget.value;
       window.debounce(resetPins);
     });
-
     houseFeatures.addEventListener('change', function (evt) {
       offerFeatures = [].filter.call(houseFeaturesList, function (it) {
         return it.checked === true;

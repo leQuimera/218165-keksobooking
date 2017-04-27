@@ -1,6 +1,6 @@
 'use strict';
-// Модуль сихронизации полей]
 
+// Модуль сихронизации полей]
 (function () {
   window.synchronizeFields = function (firstItem, secondItem, callback) {
     firstItem.addEventListener('change', function (evt) {
