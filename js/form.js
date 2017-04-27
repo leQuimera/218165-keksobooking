@@ -12,7 +12,6 @@
   var title = formInner.querySelector('#title');
   var submitButton = formInner.querySelector('.form__submit');
   var address = formInner.querySelector('#address');
-  var dialogWindow = document.querySelector('.dialog');
   var TITLE_MAXLENGTH = 100;
   var TITLE_MINLENGTH = 30;
   var PRICE_MAX = 1000000;
@@ -98,7 +97,7 @@
     }
   };
 
-  dialogWindow.style.display = 'none';
+  window.utilsSet.hideCard();
   window.synchronizeFields(timeCheckOut, timeCheckIn, timeInToTimeoutChange);
   window.synchronizeFields(timeCheckIn, timeCheckOut, timeInToTimeoutChange);
   window.synchronizeFields(roomCapacity, roomNumber, roomAndCapacityChange);

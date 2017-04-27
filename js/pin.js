@@ -1,11 +1,9 @@
 'use strict';
 
 // pin.js — модуль для отрисовки пина и взаимодействия с ним
-window.pinSet = (function () {
+window.renderPins = (function () {
 
-  var listOfAdverts = [];
   var pinsMap = document.querySelector('.tokyo__pin-map');
-  var dialogWindow = document.querySelector('.dialog');
   var PIN_WIDTH = 56;
   var PIN_HEIGHT = 75;
 
@@ -24,8 +22,7 @@ window.pinSet = (function () {
     return pin;
   };
 
-  return function (currentArray) {
-    listOfAdverts = currentArray;
+  return function (listOfAdverts) {
     var fragment = document.createDocumentFragment();
     var allPins = pinsMap.querySelectorAll('.pin:not(.pin__main)');
     if (allPins.length !== 0) {
@@ -33,7 +30,7 @@ window.pinSet = (function () {
         pinsMap.removeChild(allPins[i]);
       }
     }
-    for (var j = 0; j < currentArray.length; j++) {
+    for (var j = 0; j < listOfAdverts.length; j++) {
       fragment.appendChild(createPin(listOfAdverts[j]));
     }
 
@@ -42,7 +39,6 @@ window.pinSet = (function () {
     };
 
     pinsMap.appendChild(fragment);
-    dialogWindow.style.display = 'none';
     pinsMap.addEventListener('click', onPinClickKey);
     pinsMap.addEventListener('keydown', onPinClickKey);
   };

@@ -1,20 +1,19 @@
 'use strict';
 
 // card.js — модуль для отрисовки элемента на карточке
-window.cardSet = (function () {
+window.setCard = (function () {
 
   var OFFER_TYPE_NAMES = {
     'flat': 'Квартира',
     'house': 'Дом',
     'bungalo': 'Бунгало'
   };
-  var dialogWindow = document.querySelector('.dialog');
   var dialogClose = document.querySelector('.dialog__close');
 
   var onDialogClose = function (evt) {
     if (window.utilsSet.isEscapePressed(evt) || window.utilsSet.isClicked(evt)) {
-      window.utilsSet.removeActive('.pin--active');
-      dialogWindow.style.display = 'none';
+      window.utilsSet.removeActive('pin--active');
+      window.utilsSet.hideCard();
       document.removeEventListener('keydown', onDialogClose);
       dialogClose.removeEventListener('click', onDialogClose);
     }
@@ -59,7 +58,7 @@ window.cardSet = (function () {
     createLodgePhotos(lodgeGallery, advertItem.offer.photos);
     dialogTitleImg.src = advertItem.author.avatar;
     dialog.replaceChild(lodgeItem, dialogPanel);
-    dialogWindow.style.display = 'block';
+    window.utilsSet.displayCard();
     document.addEventListener('keydown', onDialogClose);
     dialogClose.addEventListener('click', onDialogClose);
   };

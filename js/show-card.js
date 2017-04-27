@@ -32,14 +32,14 @@ window.showCard = (function () {
         currentY = checkedPin.style.top;
       }
       if (currentPin && !currentPin.classList.contains('pin__main')) {
-        window.utilsSet.removeActive('.pin--active');
+        window.utilsSet.removeActive('pin--active');
         currentPin.classList.add('pin--active');
         pinHeight = pinHeight || parseInt(getComputedStyle(currentPin).height.slice(0, -2), 10);
         pinWidth = pinWidth || parseInt(getComputedStyle(currentPin).width.slice(0, -2), 10);
         currentX = parseInt(currentX.slice(0, -2), 10);
         currentY = parseInt(currentY.slice(0, -2), 10);
         var pinNumber = searchAdvert(listOfAdverts, currentX, currentY);
-        window.cardSet(listOfAdverts[pinNumber]);
+        window.setCard(listOfAdverts[pinNumber]);
       }
     }
   };

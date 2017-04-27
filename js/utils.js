@@ -7,6 +7,7 @@ window.utilsSet = (function () {
   var ESC_CODE = 27;
   var CLICKED = 'click';
   var pinActive = null;
+  var dialogWindow = document.querySelector('.dialog');
 
   return {
     isEnterPressed: function (evt) {
@@ -28,10 +29,16 @@ window.utilsSet = (function () {
       return array.splice(window.utilsSet.getRandomInt(0, array.length - 1), 1);
     },
     removeActive: function (itClass) {
-      pinActive = document.querySelector(itClass);
+      pinActive = document.querySelector('.' + itClass);
       if (pinActive !== null) {
-        pinActive.classList.remove(itClass.split('.')[1]);
+        pinActive.classList.remove(itClass);
       }
+    },
+    hideCard: function () {
+      dialogWindow.style.display = 'none';
+    },
+    displayCard: function () {
+      dialogWindow.style.display = 'block';
     }
   };
 })();
