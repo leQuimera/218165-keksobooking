@@ -11,6 +11,7 @@ window.load = (function (url, onLoad) {
     errorBlock.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', errorBlock);
   };
+
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switch (xhr.status) {

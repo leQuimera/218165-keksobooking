@@ -53,9 +53,11 @@
       tagsInput[i].checked = false;
     }
   };
+
   var timeInToTimeoutChange = function (fieldFirst, valueSecond) {
     fieldFirst.value = valueSecond;
   };
+
   var advertTypeChange = function (fieldFirst, valueSecond) {
     switch (valueSecond) {
       case 'hut':
@@ -72,6 +74,7 @@
         break;
     }
   };
+
   var priceChange = function (fieldFirst, valueSecond) {
     if (valueSecond <= PRICE_HUT_MAX) {
       fieldFirst.value = 'hut';
@@ -81,13 +84,16 @@
       fieldFirst.value = 'palace';
     }
   };
+
   var roomAndCapacityChange = function (fieldFirst, valueSecond) {
     fieldFirst.value = (valueSecond === '1') ? '1' : '2';
   };
+
   var checkFieldValid = function (checkedField) {
     checkedField.style.border = (checkedField.validity.valid) ? '1px solid #d9d9d3' : '2px solid red';
     return checkedField.validity.valid;
   };
+
   var onSubmitButtonClick = function (evt) {
     var validTitle = checkFieldValid(title);
     var validPrice = checkFieldValid(advertPrice);

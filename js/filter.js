@@ -23,6 +23,7 @@ window.getFiltredAdverts = function () {
       return callback(it, field, fieldValue);
     });
   };
+
   var isEqual = function (it, field, fieldValue) {
     if (field === 'guests' || field === 'rooms') {
       return it.offer[field] === parseInt(fieldValue, 10);
@@ -30,6 +31,7 @@ window.getFiltredAdverts = function () {
       return it.offer[field] === fieldValue;
     }
   };
+
   var isSuitablePrice = function (it, field, fieldValue) {
     switch (fieldValue) {
       case 'middle':
@@ -42,6 +44,7 @@ window.getFiltredAdverts = function () {
         return false;
     }
   };
+
   var isSuitableValue = function (it, field, fieldValue) {
     if (fieldValue === 'any') {
       return true;
@@ -49,6 +52,7 @@ window.getFiltredAdverts = function () {
       return isEqual(it, field, fieldValue);
     }
   };
+
   var resetPins = function () {
     window.utilsSet.hideCard();
     var currentPinArray = listAdverts.slice();
@@ -75,7 +79,7 @@ window.getFiltredAdverts = function () {
   };
 
   return function (listOfAdverts) {
-    listAdverts = listOfAdverts;
+    listAdverts = listOfAdverts.slice();
     houseType.addEventListener('change', function (evt) {
       offerType = evt.currentTarget.value;
       window.debounce(resetPins);

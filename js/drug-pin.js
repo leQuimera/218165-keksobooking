@@ -33,11 +33,13 @@
     }
     addressField.value = 'x: ' + Math.floor(newX + pinHandle.clientWidth / 2) + 'px, y: ' + Math.floor(newY + pinHandle.clientHeight) + ' px';
   };
+
   var onPinMouseUp = function (evt) {
     evt.preventDefault();
     document.removeEventListener('mousemove', onPinMouseMove);
     document.removeEventListener('mouseup', onPinMouseUp);
   };
+
   var onPinMouseDown = function (evt) {
     evt.preventDefault();
     var startCoords = {

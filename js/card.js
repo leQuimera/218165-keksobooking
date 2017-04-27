@@ -18,6 +18,7 @@ window.setCard = (function () {
       dialogClose.removeEventListener('click', onDialogClose);
     }
   };
+
   var createLodgePhotos = function (lodgePhotos, photos) {
     photos.forEach(function (currentPhoto) {
       var imgNode = new Image(50, 40);

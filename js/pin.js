@@ -33,13 +33,6 @@ window.renderPins = (function () {
     for (var j = 0; j < listOfAdverts.length; j++) {
       fragment.appendChild(createPin(listOfAdverts[j]));
     }
-
-    var onPinClickKey = function (evt) {
-      window.showCard(evt, listOfAdverts);
-    };
-
     pinsMap.appendChild(fragment);
-    pinsMap.addEventListener('click', onPinClickKey);
-    pinsMap.addEventListener('keydown', onPinClickKey);
   };
 })();
