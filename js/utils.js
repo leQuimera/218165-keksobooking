@@ -1,6 +1,6 @@
 'use strict';
 
-// Вспомогательные функции
+// Модуль вспомогательных функций
 window.utilsSet = (function () {
 
   var ENTER_CODE = 13;
