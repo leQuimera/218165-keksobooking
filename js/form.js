@@ -108,7 +108,7 @@
   window.synchronizeFields(timeCheckIn, timeCheckOut, timeInToTimeoutChange);
   window.synchronizeFields(roomCapacity, roomNumber, roomAndCapacityChange);
   window.synchronizeFields(roomNumber, roomCapacity, roomAndCapacityChange);
-  window.synchronizeFields(advertPrice, advertType, priceChange);
+  // window.synchronizeFields(advertPrice, advertType, priceChange);
   window.synchronizeFields(advertType, advertPrice, advertTypeChange);
   submitButton.addEventListener('click', onSubmitButtonClick);
 })();
