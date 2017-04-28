@@ -15,18 +15,14 @@
   var TITLE_MAXLENGTH = 100;
   var TITLE_MINLENGTH = 30;
   var PRICE_MAX = 1000000;
-  var PRICE_MIN = 1000;
-  var PRICE_HUT_MIN = 0;
-  var PRICE_HUT_MAX = 1000;
+  var PRICE_MIN = 0;
   var PRICE_FLAT_MIN = 1000;
-  var PRICE_FLAT_MAX = 10000;
   var PRICE_PALACE_MIN = 10000;
-  var PRICE_PALACE_MAX = 1000000;
   var ADVERT_TYPE = 'flat';
   var ROOM_CAPACITY = 1;
   var START_TIME = 12;
   advertPrice.setAttribute('required', 'required');
-  advertPrice.setAttribute('min', PRICE_MIN);
+  advertPrice.setAttribute('min', PRICE_FLAT_MIN);
   advertPrice.setAttribute('max', PRICE_MAX);
   title.setAttribute('required', 'required');
   title.setAttribute('minLength', TITLE_MINLENGTH);
@@ -61,27 +57,14 @@
   var advertTypeChange = function (fieldFirst, valueSecond) {
     switch (valueSecond) {
       case 'hut':
-        fieldFirst.max = PRICE_HUT_MAX;
-        fieldFirst.min = PRICE_HUT_MIN;
+        fieldFirst.min = PRICE_MIN;
         break;
       case 'flat':
-        fieldFirst.max = PRICE_FLAT_MAX;
         fieldFirst.min = PRICE_FLAT_MIN;
         break;
       case 'palace':
-        fieldFirst.max = PRICE_PALACE_MAX;
         fieldFirst.min = PRICE_PALACE_MIN;
         break;
-    }
-  };
-
-  var priceChange = function (fieldFirst, valueSecond) {
-    if (valueSecond <= PRICE_HUT_MAX) {
-      fieldFirst.value = 'hut';
-    } else if (valueSecond <= PRICE_FLAT_MAX && valueSecond > PRICE_FLAT_MIN) {
-      fieldFirst.value = 'flat';
-    } else if (valueSecond <= PRICE_PALACE_MAX && valueSecond > PRICE_PALACE_MIN) {
-      fieldFirst.value = 'palace';
     }
   };
 
@@ -108,7 +91,6 @@
   window.synchronizeFields(timeCheckIn, timeCheckOut, timeInToTimeoutChange);
   window.synchronizeFields(roomCapacity, roomNumber, roomAndCapacityChange);
   window.synchronizeFields(roomNumber, roomCapacity, roomAndCapacityChange);
-  window.synchronizeFields(advertPrice, advertType, priceChange);
   window.synchronizeFields(advertType, advertPrice, advertTypeChange);
   submitButton.addEventListener('click', onSubmitButtonClick);
 })();
