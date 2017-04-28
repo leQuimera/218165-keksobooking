@@ -22,13 +22,11 @@
   var ROOM_CAPACITY = 1;
   var START_TIME = 12;
   advertPrice.setAttribute('required', 'required');
-  advertPrice.setAttribute('min', PRICE_MIN);
+  advertPrice.setAttribute('min', PRICE_FLAT_MIN);
   advertPrice.setAttribute('max', PRICE_MAX);
   title.setAttribute('required', 'required');
   title.setAttribute('minLength', TITLE_MINLENGTH);
   title.setAttribute('maxLength', TITLE_MAXLENGTH);
-  advertPrice.setAttribute('max', PRICE_MAX);
-  advertPrice.setAttribute('min', PRICE_MIN);
   roomCapacity.value = 1;
   address.readOnly = true;
 
